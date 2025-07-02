@@ -6,11 +6,13 @@ public class PlayerMovementHandler : MonoBehaviour
     [Header("References")]
     public Transform cameraRoot; // camera child GO
     public float moveSpeed = 5f;
+    public float turnSpeed = 10f;
     public float mouseSensitivity = 2f;
 
     private Rigidbody rb;
     private Vector2 moveInput;
     private float xRotation = 0f;
+    private Vector3 lastMoveDirection;
 
     private void Awake()
     {
@@ -30,24 +32,29 @@ public class PlayerMovementHandler : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+        RotateCamera();
     }
 
     void Update()
     {
-        LookAround();
+        //LookAround();
     }
 
     void Move()
     {
         Vector3 moveDir = transform.forward * moveInput.y + transform.right * moveInput.x;
-        Vector3 targetVelocity = moveDir * moveSpeed;
+        moveDir = moveDir.normalized;
 
-        // preserving y velocity in case we want to jump later or something :3
-        Vector3 velocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
-        rb.linearVelocity = velocity;
+        if (moveDir.magnitude > 0.1f)
+        {
+            lastMoveDirection = moveDir; // store for rotation
+        }
+
+        Vector3 targetVelocity = new Vector3(moveDir.x * moveSpeed, rb.linearVelocity.y, moveDir.z * moveSpeed);
+        rb.linearVelocity = targetVelocity;
     }
 
-    void LookAround()
+    void LookAround() // can use this if we want camera to rotate with mouse later 
     {
         Vector2 mouseDelta = Mouse.current.delta.ReadValue() * mouseSensitivity;
         transform.Rotate(Vector3.up * mouseDelta.x);
@@ -55,4 +62,16 @@ public class PlayerMovementHandler : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         cameraRoot.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
+    
+    void RotateCamera()
+        {
+            if (lastMoveDirection.magnitude > 0.1f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(lastMoveDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
+            }
+    
+            // fixed camera rotation
+            cameraRoot.localRotation = Quaternion.identity;
+        }
 }
