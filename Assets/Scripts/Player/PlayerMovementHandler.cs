@@ -67,11 +67,16 @@ public class PlayerMovementHandler : MonoBehaviour
         {
             if (lastMoveDirection.magnitude > 0.1f)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(lastMoveDirection);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
+                // rotate only if moving forward (dot > 0)
+                float forwardDot = Vector3.Dot(transform.forward, lastMoveDirection);
+                if (forwardDot > 0f)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(lastMoveDirection);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
+                }
             }
-    
-            // fixed camera rotation
+
+            // fixed camera's local rotation
             cameraRoot.localRotation = Quaternion.identity;
         }
 }
