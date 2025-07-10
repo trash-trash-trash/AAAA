@@ -8,12 +8,24 @@ public class PlayerInputHandler : MonoBehaviour
     private Vector2 moveInput;
 
     public event Action<Vector2> AnnounceMoveVector2;
+    public event Action<bool> AnnounceInteract;
 
     private void Awake()
     {
         controls = new PlayerActions();
         controls.InGameActions.Move.performed += OnMove;
         controls.InGameActions.Move.canceled += OnMove;
+
+        controls.InGameActions.Interact.performed += OnInteract;
+        controls.InGameActions.Interact.canceled += OnInteract;
+    }
+
+    private void OnInteract(InputAction.CallbackContext obj)
+    {
+        if(obj.canceled)
+            AnnounceInteract?.Invoke(false);
+        else
+            AnnounceInteract?.Invoke(true);
     }
 
     private void OnEnable()
@@ -43,7 +55,6 @@ public class PlayerInputHandler : MonoBehaviour
 
         moveInput = clampedMove;
         AnnounceMoveVector2?.Invoke(moveInput);
-        Debug.Log(moveInput);
     }
     
     void OnDisable()
@@ -52,5 +63,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         controls.InGameActions.Move.performed -= OnMove;
         controls.InGameActions.Move.canceled -= OnMove;
+        controls.InGameActions.Interact.performed -= OnInteract;
+        controls.InGameActions.Interact.canceled -= OnInteract;
     }
 }

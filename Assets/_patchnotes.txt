@@ -5,3 +5,13 @@
 -- added TMP Essentials & Sprite Editor packages
 
 -- added InputActions PlayerActions & PlayerInputHandler with basic movement reading for fun
+
+1,1
+
+-- added Interact to action map and PlayerInputHandler
+
+-- added Interfaces.cs & IInteractable
+
+-- added Interactable.cs and LightSwitch.cs (LightSwitch inherits from Interactable)
+
+-- made Player prefab. Added View and PlayerCanvas with test text for Interactables. Added PlayerView for turning the interact text on/off
