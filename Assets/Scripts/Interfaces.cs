@@ -1,6 +1,8 @@
 public interface IInteractable
 {
     public void Interact();
+
+    public string InteractString();
 }
 
 public interface IInteract

@@ -6,7 +6,7 @@
 
 -- added InputActions PlayerActions & PlayerInputHandler with basic movement reading for fun
 
-1,1
+1.1
 
 -- added Interact to action map and PlayerInputHandler
 
@@ -15,3 +15,9 @@
 -- added Interactable.cs and LightSwitch.cs (LightSwitch inherits from Interactable)
 
 -- made Player prefab. Added View and PlayerCanvas with test text for Interactables. Added PlayerView for turning the interact text on/off
+
+1.2
+
+-- added NormalDoor. Normal Door is an Interactable that can opens/closes depending on which side the Player Interacts with it
+
+TODO: Change Interactable to be a constant check from the Player instead of using OnTriggerEnter/Exit for more control

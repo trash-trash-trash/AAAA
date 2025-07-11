@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerView : MonoBehaviour
@@ -6,13 +7,27 @@ public class PlayerView : MonoBehaviour
 
     public GameObject interactTextObj;
 
+    public TMP_Text interactText;
+
     void Awake()
     {
+        interactText = interactTextObj.GetComponent<TMP_Text>();
         playerInteract.AnnounceNearbyInteractable += FlipInteractTextOnOff;
     }
 
-    private void FlipInteractTextOnOff(bool input)
+    private void FlipInteractTextOnOff(Interactable interactable)
     {
-        interactTextObj.SetActive(input);
+        if(interactable!=null)
+        {
+            interactText.text = "E - "+interactable.InteractString();
+            interactTextObj.SetActive(true);
+        }
+        else
+            interactTextObj.SetActive(false);
+    }
+
+    void OnDisable()
+    {
+        playerInteract.AnnounceNearbyInteractable -= FlipInteractTextOnOff;
     }
 }

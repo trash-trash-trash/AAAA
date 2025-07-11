@@ -15,4 +15,12 @@ public class LightSwitch : Interactable
             lightObj.SetActive(lightOn);
         }
     }
+    
+    public override string InteractString()
+    {
+        if(lightOn)
+           return "TURN OFF LIGHT";
+
+        return "TURN ON LIGHT";
+    }
 }

@@ -18,17 +18,19 @@ public class PlayerInteract : MonoBehaviour, IInteract
         set => canInteract = value;
     }
 
-    //make it <IInteractable> if needed later
-    public event Action<bool> AnnounceNearbyInteractable;
+    public event Action<Interactable> AnnounceNearbyInteractable;
 
     public void SetNearbyInteractable(Interactable interactable)
     {
         nearbyInteractable = interactable;
 
         bool canNowInteract = interactable != null;
+        
         FlipCanInteract(canNowInteract);
-
-        AnnounceNearbyInteractable?.Invoke(canNowInteract);
+        if(canNowInteract)
+            AnnounceNearbyInteractable?.Invoke(interactable);
+        else
+            AnnounceNearbyInteractable?.Invoke(null);
     }
 
     public void FlipCanInteract(bool input)

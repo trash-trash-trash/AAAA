@@ -11,7 +11,12 @@ public class Interactable : MonoBehaviour, IInteractable
     {
     }
 
-    private void OnTriggerEnter(Collider other)
+    public virtual string InteractString()
+    {
+        return "";
+    }
+
+    public virtual void OnTriggerEnter(Collider other)
     {
         if ((playerLayer.value & (1 << other.gameObject.layer)) != 0)
         {
@@ -21,8 +26,14 @@ public class Interactable : MonoBehaviour, IInteractable
             if (player != null)
             {
                 player.SetNearbyInteractable(this);
+                OnPlayerEntered(other.transform);
             }
         }
+    }
+    
+    
+    protected virtual void OnPlayerEntered(Transform player)
+    {
     }
 
     private void OnTriggerExit(Collider other)
