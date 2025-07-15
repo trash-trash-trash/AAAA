@@ -10,22 +10,20 @@ public class PlayerInputHandler : MonoBehaviour
     public event Action<Vector2> AnnounceMoveVector2;
     public event Action<bool> AnnounceInteract;
 
+    public event Action<bool> AnnounceInventory;
+
     private void Awake()
     {
         controls = new PlayerActions();
-        controls.InGameActions.Move.performed += OnMove;
-        controls.InGameActions.Move.canceled += OnMove;
 
         controls.InGameActions.Interact.performed += OnInteract;
         controls.InGameActions.Interact.canceled += OnInteract;
-    }
 
-    private void OnInteract(InputAction.CallbackContext obj)
-    {
-        if(obj.canceled)
-            AnnounceInteract?.Invoke(false);
-        else
-            AnnounceInteract?.Invoke(true);
+        controls.InGameActions.Inventory.performed += OnInventory;
+        controls.InGameActions.Inventory.canceled += OnInventory;
+        
+        controls.InGameActions.Move.performed += OnMove;
+        controls.InGameActions.Move.canceled += OnMove;
     }
 
     private void OnEnable()
@@ -34,7 +32,23 @@ public class PlayerInputHandler : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
+     private void OnInteract(InputAction.CallbackContext obj)
+        {
+            if(obj.canceled)
+                AnnounceInteract?.Invoke(false);
+            else
+                AnnounceInteract?.Invoke(true);
+        }
 
+    private void OnInventory(InputAction.CallbackContext obj)
+    {
+        if(obj.canceled)
+            AnnounceInventory?.Invoke(false);
+        else
+            AnnounceInventory?.Invoke(true);
+    }
+
+   
     private void OnMove(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -61,9 +75,11 @@ public class PlayerInputHandler : MonoBehaviour
     {
         controls.Disable();
 
-        controls.InGameActions.Move.performed -= OnMove;
-        controls.InGameActions.Move.canceled -= OnMove;
         controls.InGameActions.Interact.performed -= OnInteract;
         controls.InGameActions.Interact.canceled -= OnInteract;
+        controls.InGameActions.Inventory.performed -= OnInventory;
+        controls.InGameActions.Inventory.canceled -= OnInventory;
+        controls.InGameActions.Move.performed -= OnMove;
+        controls.InGameActions.Move.canceled -= OnMove;
     }
 }

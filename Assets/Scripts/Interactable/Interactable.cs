@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour, IInteractable
 {
+    public Transform playerTransform;
     public LayerMask playerLayer;
 
     public bool canInteractWith = true;
@@ -31,9 +32,9 @@ public class Interactable : MonoBehaviour, IInteractable
         }
     }
     
-    
     protected virtual void OnPlayerEntered(Transform player)
     {
+        playerTransform = player;
     }
 
     private void OnTriggerExit(Collider other)
@@ -45,8 +46,13 @@ public class Interactable : MonoBehaviour, IInteractable
             PlayerInteract player = other.GetComponent<PlayerInteract>();
             if (player != null)
             {
-                player.SetNearbyInteractable(null);
+                CloseInteractable(player);
             }
         }
+    }
+
+    public void CloseInteractable(PlayerInteract pI)
+    {
+        pI.SetNearbyInteractable(null);
     }
 }

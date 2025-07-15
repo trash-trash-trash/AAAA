@@ -11,7 +11,6 @@ public class PlayerView : MonoBehaviour
 
     void Awake()
     {
-        interactText = interactTextObj.GetComponent<TMP_Text>();
         playerInteract.AnnounceNearbyInteractable += FlipInteractTextOnOff;
     }
 

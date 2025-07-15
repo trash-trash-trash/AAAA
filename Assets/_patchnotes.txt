@@ -21,3 +21,11 @@
 -- added NormalDoor. Normal Door is an Interactable that can opens/closes depending on which side the Player Interacts with it
 
 TODO: Change Interactable to be a constant check from the Player instead of using OnTriggerEnter/Exit for more control
+
+1.3
+
+-- added Inventory, ItemSO, ItemPickup, InventoryView
+
+-- Player can now pick up items and add them to the Inventory as Interactables
+
+-- looking at your inventory turns off movement

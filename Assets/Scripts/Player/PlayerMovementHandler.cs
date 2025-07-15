@@ -3,8 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovementHandler : MonoBehaviour
 {
-    [Header("References")]
-    public Transform cameraRoot; // camera child GO
+    [Header("References")] public Transform cameraRoot; // camera child GO
     public float moveSpeed = 5f;
     public float turnSpeed = 10f;
     public float mouseSensitivity = 2f;
@@ -13,6 +12,15 @@ public class PlayerMovementHandler : MonoBehaviour
     private Vector2 moveInput;
     private float xRotation = 0f;
     private Vector3 lastMoveDirection;
+
+    [SerializeField]
+    private bool canMove = true;
+
+    public bool CanMove
+    {
+        get => canMove;
+        set => canMove = value;
+    }
 
     private void Awake()
     {
@@ -42,6 +50,9 @@ public class PlayerMovementHandler : MonoBehaviour
 
     void Move()
     {
+        if (!canMove)
+            return;
+        
         Vector3 moveDir = transform.forward * moveInput.y + transform.right * moveInput.x;
         moveDir = moveDir.normalized;
 
@@ -62,21 +73,22 @@ public class PlayerMovementHandler : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         cameraRoot.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
-    
-    void RotateCamera()
-        {
-            if (lastMoveDirection.magnitude > 0.1f)
-            {
-                // rotate only if moving forward (dot > 0)
-                float forwardDot = Vector3.Dot(transform.forward, lastMoveDirection);
-                if (forwardDot > 0f)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(lastMoveDirection);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
-                }
-            }
 
-            // fixed camera's local rotation
-            cameraRoot.localRotation = Quaternion.identity;
+    void RotateCamera()
+    {
+        if (lastMoveDirection.magnitude > 0.1f)
+        {
+            // rotate only if moving forward (dot > 0)
+            float forwardDot = Vector3.Dot(transform.forward, lastMoveDirection);
+            if (forwardDot > 0f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(lastMoveDirection);
+                transform.rotation =
+                    Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
+            }
         }
+
+        // fixed camera's local rotation
+        cameraRoot.localRotation = Quaternion.identity;
+    }
 }
