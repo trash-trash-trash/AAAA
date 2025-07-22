@@ -27,7 +27,7 @@ public class PlayerInteract : MonoBehaviour, IInteract
         bool canNowInteract = interactable != null;
         
         FlipCanInteract(canNowInteract);
-        if(canNowInteract)
+        if(canNowInteract && interactable.canInteractWith)
             AnnounceNearbyInteractable?.Invoke(interactable);
         else
             AnnounceNearbyInteractable?.Invoke(null);
@@ -52,6 +52,11 @@ public class PlayerInteract : MonoBehaviour, IInteract
         if (inputPressed && nearbyInteractable != null && nearbyInteractable.canInteractWith)
         {
             nearbyInteractable.Interact();
+            
+            if(nearbyInteractable.canInteractWith)
+                AnnounceNearbyInteractable?.Invoke(nearbyInteractable);
+            else
+                AnnounceNearbyInteractable?.Invoke(null);
         }
     }
 }

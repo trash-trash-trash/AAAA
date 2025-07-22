@@ -7,7 +7,6 @@ public class NormalDoor : Interactable
     public bool opensInwards = false;
     public bool open = false;
     public bool isOpening = false;
-    private bool canInteract = true;
 
     public Transform pivot;
     public Quaternion initialRotation;
@@ -37,7 +36,7 @@ public class NormalDoor : Interactable
     IEnumerator OpenCloseDoorCoro()
     {
         isOpening = true;
-        canInteract = false;
+        canInteractWith = false;
 
         Quaternion targetRotation;
         if (!open)
@@ -69,12 +68,12 @@ public class NormalDoor : Interactable
             open = true;
 
         isOpening = false;
-        canInteract = true;
+        canInteractWith = true;
     }
 
     public override void Interact()
     {
-        if (canInteract)
+        if (canInteractWith)
             OpenCloseDoor();
     }
 

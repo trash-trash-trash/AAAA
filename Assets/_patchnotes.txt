@@ -29,3 +29,11 @@ TODO: Change Interactable to be a constant check from the Player instead of usin
 -- Player can now pick up items and add them to the Inventory as Interactables
 
 -- looking at your inventory turns off movement
+
+1.4
+
+-- fixed an issue where Interactables wouldn't be interactable on first attempt, only subsequent. now works all the time
+
+-- fixed Interactables displaying Interact text when not able to be interacted with
+
+-- added SlidingDoor.cs and prefab

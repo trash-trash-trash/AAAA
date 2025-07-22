@@ -20,8 +20,11 @@ public class Interactable : MonoBehaviour, IInteractable
     }
 
     //change to ontriggerstay? note this will trigger every frame while overlapped
-    public virtual void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerStay(Collider other)
     {
+        if (!canInteractWith)
+            return;
+        
         if ((playerLayer.value & (1 << other.gameObject.layer)) != 0)
         {
             playerInRangeToInteract = true;
