@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public class Interactable : MonoBehaviour, IInteractable
 {
     public Transform playerTransform;
@@ -17,6 +19,7 @@ public class Interactable : MonoBehaviour, IInteractable
         return "";
     }
 
+    //change to ontriggerstay? note this will trigger every frame while overlapped
     public virtual void OnTriggerEnter(Collider other)
     {
         if ((playerLayer.value & (1 << other.gameObject.layer)) != 0)

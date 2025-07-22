@@ -5,7 +5,7 @@ public class PlayerInteract : MonoBehaviour, IInteract
 {
     public PlayerInputHandler playerInputs;
 
-    private Interactable nearbyInteractable;
+    public Interactable nearbyInteractable;
 
     [SerializeField]
     private bool canInteract = true;
@@ -35,12 +35,12 @@ public class PlayerInteract : MonoBehaviour, IInteract
 
     public void FlipCanInteract(bool input)
     {
-        if (input && !canInteract)
+        if (input)
         {
             canInteract = true;
             playerInputs.AnnounceInteract += TryInteract;
         }
-        else if (!input && canInteract)
+        else
         {
             canInteract = false;
             playerInputs.AnnounceInteract -= TryInteract;
