@@ -14,7 +14,6 @@ public class Inventory : MonoBehaviour
    public List<ItemSO> playerItems = new List<ItemSO>();
 
    public PlayerInputHandler playerInputs;
-   public PlayerMovementHandler playerMovementHandler;
 
    public event Action<bool> AnnounceOpenCloseInventory;
 
@@ -37,14 +36,12 @@ public class Inventory : MonoBehaviour
       {
          if (!inventoryOpen)
          {
-            playerMovementHandler.CanMove = false;
             inventoryOpen = true;
             SelectItem(selectIndex);
             AnnounceOpenCloseInventory?.Invoke(true);
          }
          else
          {
-            playerMovementHandler.CanMove = true;
             inventoryOpen = false;
             AnnounceOpenCloseInventory?.Invoke(false);
          }

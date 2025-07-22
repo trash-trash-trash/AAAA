@@ -4,11 +4,10 @@ using UnityEngine;
 [Serializable]
 public class Interactable : MonoBehaviour, IInteractable
 {
-    public Transform playerTransform;
-    public LayerMask playerLayer;
+    public Transform iInteractTransform;
 
     public bool canInteractWith = true;
-    public bool playerInRangeToInteract = false;
+    public bool iInteractInRangeToInteract = false;
 
     public virtual void Interact()
     {
@@ -25,40 +24,40 @@ public class Interactable : MonoBehaviour, IInteractable
         if (!canInteractWith)
             return;
         
-        if ((playerLayer.value & (1 << other.gameObject.layer)) != 0)
+        if (other.GetComponent<IInteract>()!=null)
         {
-            playerInRangeToInteract = true;
+            iInteractInRangeToInteract = true;
 
-            PlayerInteract player = other.GetComponent<PlayerInteract>();
-            if (player != null)
+            IInteract iInteract = other.GetComponent<IInteract>();
+            if (iInteract != null)
             {
-                player.SetNearbyInteractable(this);
-                OnPlayerEntered(other.transform);
+                iInteract.SetNearbyInteractable(this);
+                OnIInteractEntered(other.transform);
             }
         }
     }
     
-    protected virtual void OnPlayerEntered(Transform player)
+    protected virtual void OnIInteractEntered(Transform player)
     {
-        playerTransform = player;
+        iInteractTransform = player;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if ((playerLayer.value & (1 << other.gameObject.layer)) != 0)
+        if (other.GetComponent<IInteract>()!=null)
         {
-            playerInRangeToInteract = false;
+            iInteractInRangeToInteract = false;
 
-            PlayerInteract player = other.GetComponent<PlayerInteract>();
-            if (player != null)
+            IInteract iInteract = other.GetComponent<IInteract>();
+            if (iInteract != null)
             {
-                CloseInteractable(player);
+                CloseInteractable(iInteract);
             }
         }
     }
 
-    public void CloseInteractable(PlayerInteract pI)
+    public void CloseInteractable(IInteract iInteract)
     {
-        pI.SetNearbyInteractable(null);
+        iInteract.SetNearbyInteractable(null);
     }
 }

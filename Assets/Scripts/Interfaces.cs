@@ -8,4 +8,6 @@ public interface IInteractable
 public interface IInteract
 {
     public void FlipCanInteract(bool input);
+
+    public void SetNearbyInteractable(Interactable interactable);
 }

@@ -49,14 +49,14 @@ public class PlayerInteract : MonoBehaviour, IInteract
 
     private void TryInteract(bool inputPressed)
     {
-        if (inputPressed && nearbyInteractable != null && nearbyInteractable.canInteractWith)
+        if (inputPressed && nearbyInteractable != null)
         {
-            nearbyInteractable.Interact();
-            
             if(nearbyInteractable.canInteractWith)
                 AnnounceNearbyInteractable?.Invoke(nearbyInteractable);
             else
                 AnnounceNearbyInteractable?.Invoke(null);
+            
+            nearbyInteractable.Interact();
         }
     }
 }

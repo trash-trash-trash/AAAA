@@ -6,14 +6,16 @@ public class ItemPickup : Interactable
 
     public override void Interact()
     {
-        if (canInteractWith && playerInRangeToInteract)
+        if (canInteractWith && iInteractInRangeToInteract)
         {
-            Inventory inventory = playerTransform.GetComponent<Inventory>();
+            Inventory inventory = iInteractTransform.GetComponent<Inventory>();
             if (inventory != null)
             {
                 inventory.AddItem(itemSO);
-                PlayerInteract player = playerTransform.GetComponent<PlayerInteract>();
+                PlayerInteract player = iInteractTransform.GetComponent<PlayerInteract>();
                 CloseInteractable(player);
+                //  gameObject.SetActive(false);
+                //destroying seemsbadman
                 Destroy(gameObject);
             }
         }

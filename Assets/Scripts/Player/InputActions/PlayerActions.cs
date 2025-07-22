@@ -53,6 +53,24 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""5e27b838-9a5f-4635-af82-b21cb41fa844"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""bc38738b-d2f4-450c-945f-fbad9430c066"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -176,6 +194,28 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c95f5ba1-7195-40e6-b487-62467e5180af"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e27c4ba-c643-4986-8fc4-3c5291eeece1"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -204,6 +244,8 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_InGameActions_Move = m_InGameActions.FindAction("Move", throwIfNotFound: true);
         m_InGameActions_Interact = m_InGameActions.FindAction("Interact", throwIfNotFound: true);
         m_InGameActions_Inventory = m_InGameActions.FindAction("Inventory", throwIfNotFound: true);
+        m_InGameActions_Look = m_InGameActions.FindAction("Look", throwIfNotFound: true);
+        m_InGameActions_Sprint = m_InGameActions.FindAction("Sprint", throwIfNotFound: true);
     }
 
     ~@PlayerActions()
@@ -273,6 +315,8 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGameActions_Move;
     private readonly InputAction m_InGameActions_Interact;
     private readonly InputAction m_InGameActions_Inventory;
+    private readonly InputAction m_InGameActions_Look;
+    private readonly InputAction m_InGameActions_Sprint;
     public struct InGameActionsActions
     {
         private @PlayerActions m_Wrapper;
@@ -280,6 +324,8 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_InGameActions_Move;
         public InputAction @Interact => m_Wrapper.m_InGameActions_Interact;
         public InputAction @Inventory => m_Wrapper.m_InGameActions_Inventory;
+        public InputAction @Look => m_Wrapper.m_InGameActions_Look;
+        public InputAction @Sprint => m_Wrapper.m_InGameActions_Sprint;
         public InputActionMap Get() { return m_Wrapper.m_InGameActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -298,6 +344,12 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @Sprint.started += instance.OnSprint;
+            @Sprint.performed += instance.OnSprint;
+            @Sprint.canceled += instance.OnSprint;
         }
 
         private void UnregisterCallbacks(IInGameActionsActions instance)
@@ -311,6 +363,12 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @Sprint.started -= instance.OnSprint;
+            @Sprint.performed -= instance.OnSprint;
+            @Sprint.canceled -= instance.OnSprint;
         }
 
         public void RemoveCallbacks(IInGameActionsActions instance)
@@ -342,5 +400,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
     }
 }

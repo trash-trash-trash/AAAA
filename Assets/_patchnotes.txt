@@ -37,3 +37,13 @@ TODO: Change Interactable to be a constant check from the Player instead of usin
 -- fixed Interactables displaying Interact text when not able to be interacted with
 
 -- added SlidingDoor.cs and prefab
+
+1.5
+
+-- updated PlayerMovementHandler, added mouselook
+
+-- added PlayerMiddleManager.cs to control the player directly (eg stop move/look/interact when inventory is open)
+
+-- rejigged Interactables to use IInteract instead of layers (eg so enemies could interact with doors instead of just the player)
+
+-- added Sprint function to movement

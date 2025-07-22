@@ -7,10 +7,12 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerActions controls;
     private Vector2 moveInput;
 
-    public event Action<Vector2> AnnounceMoveVector2;
     public event Action<bool> AnnounceInteract;
-
     public event Action<bool> AnnounceInventory;
+    public event Action<Vector2> AnnounceLook;
+    public event Action<Vector2> AnnounceMoveVector2;
+
+    public event Action<bool> AnnounceSprint;
 
     private void Awake()
     {
@@ -21,9 +23,15 @@ public class PlayerInputHandler : MonoBehaviour
 
         controls.InGameActions.Inventory.performed += OnInventory;
         controls.InGameActions.Inventory.canceled += OnInventory;
-        
+
+        controls.InGameActions.Look.performed += OnLook;
+        controls.InGameActions.Look.canceled += OnLook;
+
         controls.InGameActions.Move.performed += OnMove;
         controls.InGameActions.Move.canceled += OnMove;
+
+        controls.InGameActions.Sprint.performed += OnSprint;
+        controls.InGameActions.Sprint.canceled += OnSprint;
     }
 
     private void OnEnable()
@@ -32,30 +40,36 @@ public class PlayerInputHandler : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
-     private void OnInteract(InputAction.CallbackContext obj)
-        {
-            if(obj.canceled)
-                AnnounceInteract?.Invoke(false);
-            else
-                AnnounceInteract?.Invoke(true);
-        }
+
+    private void OnInteract(InputAction.CallbackContext obj)
+    {
+        if (obj.canceled)
+            AnnounceInteract?.Invoke(false);
+        else
+            AnnounceInteract?.Invoke(true);
+    }
 
     private void OnInventory(InputAction.CallbackContext obj)
     {
-        if(obj.canceled)
+        if (obj.canceled)
             AnnounceInventory?.Invoke(false);
         else
             AnnounceInventory?.Invoke(true);
     }
 
-   
+    private void OnLook(InputAction.CallbackContext context)
+    {
+        Vector2 delta = context.ReadValue<Vector2>();
+        AnnounceLook?.Invoke(delta);
+    }
+
     private void OnMove(InputAction.CallbackContext context)
     {
         if (context.performed)
             moveInput = context.ReadValue<Vector2>();
         else
             moveInput = Vector2.zero;
-        
+
         HandleMove();
     }
 
@@ -70,7 +84,15 @@ public class PlayerInputHandler : MonoBehaviour
         moveInput = clampedMove;
         AnnounceMoveVector2?.Invoke(moveInput);
     }
-    
+
+    private void OnSprint(InputAction.CallbackContext context)
+    {
+        if (context.canceled)
+            AnnounceSprint?.Invoke(false);
+        else
+            AnnounceSprint?.Invoke(true);
+    }
+
     void OnDisable()
     {
         controls.Disable();
@@ -81,5 +103,7 @@ public class PlayerInputHandler : MonoBehaviour
         controls.InGameActions.Inventory.canceled -= OnInventory;
         controls.InGameActions.Move.performed -= OnMove;
         controls.InGameActions.Move.canceled -= OnMove;
+        controls.InGameActions.Sprint.performed -= OnSprint;
+        controls.InGameActions.Sprint.canceled -= OnSprint;
     }
 }

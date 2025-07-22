@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 8279886872642958885}
   - component: {fileID: 8445921048217210281}
   - component: {fileID: 1343610410444453748}
+  - component: {fileID: 4030497408087764594}
   - component: {fileID: 6172404919434850716}
   - component: {fileID: 4357618972749286428}
   - component: {fileID: 2347851017993203734}
@@ -264,8 +265,23 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 1
+  m_Constraints: 112
+  m_CollisionDetection: 2
+--- !u!114 &4030497408087764594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541482308043605382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbf16430aef2e5442bdd23b133f79a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 6593809102116751238}
+  playerInteract: {fileID: 2347851017993203734}
+  playerMovementHandler: {fileID: 4357618972749286428}
 --- !u!114 &6172404919434850716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,11 +306,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d4e9af750a0c1242ab1c0cb2c0ebb2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputHandler: {fileID: 6172404919434850716}
   cameraRoot: {fileID: 3353380165561579807}
+  rb: {fileID: 1343610410444453748}
+  canMove: 1
+  canLook: 1
   moveSpeed: 8
   turnSpeed: 1
-  mouseSensitivity: 0
-  canMove: 1
+  mouseSensitivity: 0.01
+  minPitch: -70
+  maxPitch: 70
 --- !u!114 &2347851017993203734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,6 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInputs: {fileID: 6172404919434850716}
+  nearbyInteractable: {fileID: 0}
   canInteract: 1
 --- !u!114 &6593809102116751238
 MonoBehaviour:
@@ -327,7 +349,6 @@ MonoBehaviour:
   selectedItem: {fileID: 0}
   playerItems: []
   playerInputs: {fileID: 6172404919434850716}
-  playerMovementHandler: {fileID: 4357618972749286428}
 --- !u!1 &2825496252565652853
 GameObject:
   m_ObjectHideFlags: 0

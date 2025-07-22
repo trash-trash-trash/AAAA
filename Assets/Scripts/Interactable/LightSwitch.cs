@@ -9,7 +9,7 @@ public class LightSwitch : Interactable
 
     public override void Interact()
     {
-        if (canInteractWith && playerInRangeToInteract)
+        if (canInteractWith && iInteractInRangeToInteract)
         {
             lightOn = !lightOn;
             lightObj.SetActive(lightOn);

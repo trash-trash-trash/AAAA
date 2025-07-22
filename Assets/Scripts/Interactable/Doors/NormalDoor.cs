@@ -19,7 +19,7 @@ public class NormalDoor : Interactable
         initialRotation = pivot.rotation;
     }
 
-    protected override void OnPlayerEntered(Transform player)
+    protected override void OnIInteractEntered(Transform player)
     {
         //flips opening inwards depending on which side player entered
         Vector3 toPlayer = player.position - transform.position;
