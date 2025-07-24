@@ -27,7 +27,6 @@ public class PlayerMovementHandler : MonoBehaviour
     
     [Header("Settings")]
     public float moveSpeed = 5f;
-    public float turnSpeed = 10f;
     public float mouseSensitivity = 2f;
     
     public float minPitch = -70f;

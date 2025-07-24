@@ -37,9 +37,9 @@ public class Interactable : MonoBehaviour, IInteractable
         }
     }
     
-    protected virtual void OnIInteractEntered(Transform player)
+    protected virtual void OnIInteractEntered(Transform other)
     {
-        iInteractTransform = player;
+        iInteractTransform = other;
     }
 
     private void OnTriggerExit(Collider other)

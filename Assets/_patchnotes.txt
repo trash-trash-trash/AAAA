@@ -47,3 +47,11 @@ TODO: Change Interactable to be a constant check from the Player instead of usin
 -- rejigged Interactables to use IInteract instead of layers (eg so enemies could interact with doors instead of just the player)
 
 -- added Sprint function to movement
+
+1.6
+
+-- updated InventoryView to be rotational, added buttons, enabled cursor during Inventory
+
+-- added "Locked" variants for NormalDoor and SlidingDoor
+
+-- added LevelGenerator, LevelParts, LevelGeneratorController. Added wall, ground, hall way prefab.

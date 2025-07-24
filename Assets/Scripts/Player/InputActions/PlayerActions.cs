@@ -71,6 +71,15 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseScroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""f39d1803-c0d0-47fc-9779-782150a4e713"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -216,6 +225,39 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""003aaa3b-ce4b-454f-98dc-6f805a4a8520"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""id"": ""43a9ed75-a264-4a3b-a8c9-946484f54baa"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""ce062f5c-120b-4ab7-8f28-ce0ae2458e72"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -246,6 +288,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_InGameActions_Inventory = m_InGameActions.FindAction("Inventory", throwIfNotFound: true);
         m_InGameActions_Look = m_InGameActions.FindAction("Look", throwIfNotFound: true);
         m_InGameActions_Sprint = m_InGameActions.FindAction("Sprint", throwIfNotFound: true);
+        m_InGameActions_MouseScroll = m_InGameActions.FindAction("MouseScroll", throwIfNotFound: true);
     }
 
     ~@PlayerActions()
@@ -317,6 +360,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGameActions_Inventory;
     private readonly InputAction m_InGameActions_Look;
     private readonly InputAction m_InGameActions_Sprint;
+    private readonly InputAction m_InGameActions_MouseScroll;
     public struct InGameActionsActions
     {
         private @PlayerActions m_Wrapper;
@@ -326,6 +370,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         public InputAction @Inventory => m_Wrapper.m_InGameActions_Inventory;
         public InputAction @Look => m_Wrapper.m_InGameActions_Look;
         public InputAction @Sprint => m_Wrapper.m_InGameActions_Sprint;
+        public InputAction @MouseScroll => m_Wrapper.m_InGameActions_MouseScroll;
         public InputActionMap Get() { return m_Wrapper.m_InGameActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -350,6 +395,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @MouseScroll.started += instance.OnMouseScroll;
+            @MouseScroll.performed += instance.OnMouseScroll;
+            @MouseScroll.canceled += instance.OnMouseScroll;
         }
 
         private void UnregisterCallbacks(IInGameActionsActions instance)
@@ -369,6 +417,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @MouseScroll.started -= instance.OnMouseScroll;
+            @MouseScroll.performed -= instance.OnMouseScroll;
+            @MouseScroll.canceled -= instance.OnMouseScroll;
         }
 
         public void RemoveCallbacks(IInGameActionsActions instance)
@@ -402,5 +453,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnMouseScroll(InputAction.CallbackContext context);
     }
 }

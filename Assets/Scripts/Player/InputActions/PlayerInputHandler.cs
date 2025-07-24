@@ -10,6 +10,9 @@ public class PlayerInputHandler : MonoBehaviour
     public event Action<bool> AnnounceInteract;
     public event Action<bool> AnnounceInventory;
     public event Action<Vector2> AnnounceLook;
+
+    public event Action<Vector2> AnnounceScroll;
+    
     public event Action<Vector2> AnnounceMoveVector2;
 
     public event Action<bool> AnnounceSprint;
@@ -27,11 +30,19 @@ public class PlayerInputHandler : MonoBehaviour
         controls.InGameActions.Look.performed += OnLook;
         controls.InGameActions.Look.canceled += OnLook;
 
+        controls.InGameActions.MouseScroll.performed += OnScroll;
+        
         controls.InGameActions.Move.performed += OnMove;
         controls.InGameActions.Move.canceled += OnMove;
 
         controls.InGameActions.Sprint.performed += OnSprint;
         controls.InGameActions.Sprint.canceled += OnSprint;
+    }
+
+    private void OnScroll(InputAction.CallbackContext context)
+    {
+        Vector2 delta = context.ReadValue<Vector2>();
+        AnnounceScroll?.Invoke(delta);
     }
 
     private void OnEnable()
@@ -41,17 +52,17 @@ public class PlayerInputHandler : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void OnInteract(InputAction.CallbackContext obj)
+    private void OnInteract(InputAction.CallbackContext context)
     {
-        if (obj.canceled)
+        if (context.canceled)
             AnnounceInteract?.Invoke(false);
         else
             AnnounceInteract?.Invoke(true);
     }
 
-    private void OnInventory(InputAction.CallbackContext obj)
+    private void OnInventory(InputAction.CallbackContext context)
     {
-        if (obj.canceled)
+        if (context.canceled)
             AnnounceInventory?.Invoke(false);
         else
             AnnounceInventory?.Invoke(true);

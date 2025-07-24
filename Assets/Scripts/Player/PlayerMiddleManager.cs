@@ -18,12 +18,14 @@ public class PlayerMiddleManager : MonoBehaviour
             playerInteract.CanInteract = false;
             playerMovementHandler.CanLook = false;
             playerMovementHandler.CanMove = false;
+            Cursor.visible = true;
         }
         else
         {
             playerInteract.CanInteract = true;
             playerMovementHandler.CanLook = true;
             playerMovementHandler.CanMove = true;
+            Cursor.visible = false;
         }
     }
 

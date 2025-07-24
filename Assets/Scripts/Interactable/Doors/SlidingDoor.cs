@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SlidingDoor : Interactable
+public class SlidingDoor : Door
 {
     public Transform slideTarget; 
     public Vector3 slideDirection = Vector3.up; 
@@ -23,8 +23,15 @@ public class SlidingDoor : Interactable
         openPosition = closedPosition + direction * slideAmount;
     }
 
-    public void OpenCloseDoor()
+    public override void OpenCloseDoor()
     {
+        if (locked)
+        {
+            base.TryUnlock();
+        }
+        base.OpenCloseDoor();
+        if (locked)
+            return;
         StopCoroutine(OpenCloseDoorCoro());
         StartCoroutine(OpenCloseDoorCoro());
     }

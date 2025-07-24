@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class NormalDoor : Interactable
+public class NormalDoor : Door
 {
     public bool opensInwards = false;
     public bool open = false;
@@ -19,16 +19,24 @@ public class NormalDoor : Interactable
         initialRotation = pivot.rotation;
     }
 
-    protected override void OnIInteractEntered(Transform player)
+    protected override void OnIInteractEntered(Transform other)
     {
+        base.OnIInteractEntered(other);
         //flips opening inwards depending on which side player entered
-        Vector3 toPlayer = player.position - transform.position;
-        float dot = Vector3.Dot(transform.right, toPlayer);
+        Vector3 rotationToOther = other.position - transform.position;
+        float dot = Vector3.Dot(transform.right, rotationToOther);
         opensInwards = (dot < 0);
     }
 
-    public void OpenCloseDoor()
+    public override void OpenCloseDoor()
     {
+        if (locked)
+        {
+            base.TryUnlock();
+        }
+        base.OpenCloseDoor();
+        if (locked)
+            return;
         StopCoroutine(OpenCloseDoorCoro());
         StartCoroutine(OpenCloseDoorCoro());
     }

@@ -16,7 +16,6 @@ public class Inventory : MonoBehaviour
    public PlayerInputHandler playerInputs;
 
    public event Action<bool> AnnounceOpenCloseInventory;
-
    public event Action<int> AnnounceSelectIndex;
 
    public void Awake()
@@ -55,6 +54,7 @@ public class Inventory : MonoBehaviour
 
       selectIndex = Mathf.Clamp(index, 0, playerItems.Count - 1);
       selectedItem = playerItems[selectIndex];
+      AnnounceSelectIndex?.Invoke(selectIndex);
    }
    
    private void ScrollInventory(Vector2 input)
@@ -79,7 +79,6 @@ public class Inventory : MonoBehaviour
             selectIndex = playerItems.Count - 1;
 
          SelectItem(selectIndex);
-         AnnounceSelectIndex?.Invoke(selectIndex);
       }
    }
 
@@ -88,10 +87,31 @@ public class Inventory : MonoBehaviour
       playerItems.Add(newItem);
    }
 
+   public void LeftButton()
+   {
+      int newIndex = selectIndex - 1;
+      if (newIndex < 0)
+         newIndex = playerItems.Count - 1;
+
+      SelectItem(newIndex);
+   }
+
+   public void RightButton()
+   {
+      int newIndex = selectIndex + 1;
+      if (newIndex >= playerItems.Count)
+         newIndex = 0;
+
+      SelectItem(newIndex);
+   }
+
+
    public void RemoveItem(ItemSO newItem)
    {
       if (playerItems.Contains(newItem))
          playerItems.Remove(newItem);
+      
+      SelectItem(selectIndex);
    }
 
    void OnDisable()
