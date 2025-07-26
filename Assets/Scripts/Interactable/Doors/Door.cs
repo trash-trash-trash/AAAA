@@ -14,7 +14,8 @@ public class Door : Interactable
     public virtual void TryUnlock()
     {
         Inventory inventory = iInteractTransform.GetComponent<Inventory>();
-        if (inventory.playerItems.Contains(key))
+        //if (inventory.playerItems.Contains(key))
+        if (inventory.selectedItem == key)
         {
             Debug.Log("Opened!");
             locked = false;

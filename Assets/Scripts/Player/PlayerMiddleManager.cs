@@ -1,16 +1,25 @@
 using UnityEngine;
 
-public class PlayerMiddleManager : MonoBehaviour
+public class PlayerMiddleManager : MonoBehaviour, IPlayer
 {
+    public static PlayerMiddleManager Instance { get; private set; }
+
+    public Transform cameraRoot;
     public Inventory inventory;
     public PlayerInteract playerInteract;
     public PlayerMovementHandler playerMovementHandler;
 
-    void Start()
+    void Awake()
     {
+        Instance = this;
         inventory.AnnounceOpenCloseInventory += StopStartMoveLook;
     }
-
+    
+    public Transform ReturnCameraRoot()
+    {
+        return cameraRoot;
+    }
+    
     private void StopStartMoveLook(bool input)
     {
         if (input)
@@ -32,5 +41,10 @@ public class PlayerMiddleManager : MonoBehaviour
     void OnDisable()
     {
         inventory.AnnounceOpenCloseInventory -= StopStartMoveLook;
+    }
+
+    public Transform ReturnTransform()
+    {
+        return transform;
     }
 }

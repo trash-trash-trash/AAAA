@@ -55,3 +55,17 @@ TODO: Change Interactable to be a constant check from the Player instead of usin
 -- added "Locked" variants for NormalDoor and SlidingDoor
 
 -- added LevelGenerator, LevelParts, LevelGeneratorController. Added wall, ground, hall way prefab.
+
+1.7
+
+-- added IsCameraLookingAtMe, EnemyAIBrain, GameObjectStateManager, two states, Idle and WalkToPlayer
+
+-- WalkToPlayer uses NavMeshAgent to walk to the player. snap looks at the player and walks towards them when not in sight
+
+-- added Spawner to begin spawning boards and mannequins
+
+TODO: danni zero 3D models out correctly!!!
+
+-- added CardboardMannequin, FollowMannequin and SpawnLocation prefabs
+
+-- after much fucking around got NavMeshAgent and RigidBody behaving. Follow Mannequin now pathfinds walks towards the Player
