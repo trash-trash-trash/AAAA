@@ -69,3 +69,16 @@ TODO: danni zero 3D models out correctly!!!
 -- added CardboardMannequin, FollowMannequin and SpawnLocation prefabs
 
 -- after much fucking around got NavMeshAgent and RigidBody behaving. Follow Mannequin now pathfinds walks towards the Player
+
+1.8
+
+-- added Health. tracks current HP, maxHP and isAlive;
+
+-- updated Spawner to now include Player prefab. Spawner resets positions of spawned Objs when the Player dies
+
+-- updated EnemyAI WalkToPlayer state to kill the Player when in range
+
+-- updated Items to remove from Player Inventory and respawn on Player death
+
+TODO: Defactor Spawner
+TODO: Update Player Location / spawnedLocations to use when Player advances (checkpoint)

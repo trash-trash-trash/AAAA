@@ -111,7 +111,21 @@ public class Inventory : MonoBehaviour
       if (playerItems.Contains(newItem))
          playerItems.Remove(newItem);
       
+      if (selectIndex >= playerItems.Count)
+         selectIndex = Mathf.Max(0, playerItems.Count - 1);
+
       SelectItem(selectIndex);
+   }
+
+   public void Reset()
+   {
+      List<ItemSO> itemsToRemove = new List<ItemSO>(playerItems);
+      foreach (var item in itemsToRemove)
+      {
+         item.Reset();
+         RemoveItem(item);
+      }
+      playerItems.Clear();
    }
 
    void OnDisable()

@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 4030497408087764594}
   - component: {fileID: 6172404919434850716}
   - component: {fileID: 4357618972749286428}
+  - component: {fileID: 1992067759031225187}
   - component: {fileID: 2347851017993203734}
   - component: {fileID: 6593809102116751238}
   m_Layer: 7
@@ -191,6 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraRoot: {fileID: 3353380165561579807}
   inventory: {fileID: 6593809102116751238}
+  health: {fileID: 1992067759031225187}
   playerInteract: {fileID: 2347851017993203734}
   playerMovementHandler: {fileID: 4357618972749286428}
 --- !u!114 &6172404919434850716
@@ -226,6 +228,21 @@ MonoBehaviour:
   mouseSensitivity: 0.01
   minPitch: -70
   maxPitch: 70
+--- !u!114 &1992067759031225187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541482308043605382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12e6ec4c6ecedd345b9eb09dd84c28e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 0
+  currentHealth: 1
+  maxHealth: 1
 --- !u!114 &2347851017993203734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1132,7 +1149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6595164689356354689
 RectTransform:
   m_ObjectHideFlags: 0

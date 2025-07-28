@@ -14,11 +14,15 @@ public class ItemPickup : Interactable
                 inventory.AddItem(itemSO);
                 PlayerInteract player = iInteractTransform.GetComponent<PlayerInteract>();
                 CloseInteractable(player);
-                //  gameObject.SetActive(false);
-                //destroying seemsbadman
-                Destroy(gameObject);
+                gameObject.SetActive(false);
+                itemSO.AnnounceReset += Reset;
             }
         }
+    }
+
+    private void Reset()
+    {
+        gameObject.SetActive(true);
     }
 
     public override string InteractString()

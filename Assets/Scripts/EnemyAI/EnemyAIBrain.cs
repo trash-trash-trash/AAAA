@@ -30,7 +30,6 @@ public class EnemyAIBrain : MonoBehaviour
                 { EnemyAIStates.Idle , idleObj},
                 { EnemyAIStates.WalkToPlayer, walkToPlayerObj}
             };
-            
         }
 
         isCameraLookingAtMe.AnnounceInView += FlipWalkTo;

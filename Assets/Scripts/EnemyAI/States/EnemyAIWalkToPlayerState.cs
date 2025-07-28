@@ -8,6 +8,12 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
     public Transform playerTransform;
 
     private bool huntingPlayer = false;
+
+    public float currentDist;
+    
+    public float minUpdateDistance = 0.5f;
+    
+    public float minKillDist = 7f;
     
     public override void OnEnable()
     {
@@ -49,7 +55,7 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
     {
         if (!huntingPlayer || !agent.enabled) return;
 
-        if (Vector3.Distance(agent.destination, playerTransform.position) > 0.5f)
+        if (Vector3.Distance(agent.destination, playerTransform.position) > minUpdateDistance)
         {
             agent.SetDestination(playerTransform.position);
         }
@@ -58,6 +64,14 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
         if (direction != Vector3.zero)
         {
             agent.transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        currentDist = Vector3.Distance(agent.transform.position, playerTransform.position);
+        if (currentDist < minKillDist)
+        {
+            Health HP = playerTransform.GetComponent<Health>();
+            HP.Kill();
+            Debug.Log(Vector3.Distance(agent.transform.position, playerTransform.position));
         }
     }
 

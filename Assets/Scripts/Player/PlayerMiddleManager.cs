@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMiddleManager : MonoBehaviour, IPlayer
@@ -6,6 +7,7 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
 
     public Transform cameraRoot;
     public Inventory inventory;
+    public Health health;
     public PlayerInteract playerInteract;
     public PlayerMovementHandler playerMovementHandler;
 
@@ -13,8 +15,17 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
     {
         Instance = this;
         inventory.AnnounceOpenCloseInventory += StopStartMoveLook;
+        health.AnnounceIsAlive += ResetInventory;
     }
-    
+
+    private void ResetInventory(bool input)
+    {
+        if (!input)
+        {
+            inventory.Reset();
+        }
+    }
+
     public Transform ReturnCameraRoot()
     {
         return cameraRoot;
