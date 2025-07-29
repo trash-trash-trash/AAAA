@@ -16,9 +16,9 @@ public class PlayerView : MonoBehaviour
 
     private void FlipInteractTextOnOff(Interactable interactable)
     {
-        if(interactable!=null)
+        if(interactable!=null && playerInteract.CanInteract && !playerInteract.interactDisabled)
         {
-            interactText.text = "E - "+interactable.InteractString();
+            interactText.text = interactable.InteractString();
             interactTextObj.SetActive(true);
         }
         else

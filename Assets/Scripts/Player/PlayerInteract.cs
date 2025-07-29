@@ -7,6 +7,8 @@ public class PlayerInteract : MonoBehaviour, IInteract
 
     public Interactable nearbyInteractable;
 
+    public bool interactDisabled = false;
+    
     [SerializeField]
     private bool canInteract = true;
 
@@ -33,23 +35,28 @@ public class PlayerInteract : MonoBehaviour, IInteract
             AnnounceNearbyInteractable?.Invoke(null);
     }
 
+    public bool ReturnCanInteract()
+    {
+        return CanInteract;
+    }
+
     public void FlipCanInteract(bool input)
     {
         if (input)
         {
-            canInteract = true;
+            CanInteract = true;
             playerInputs.AnnounceInteract += TryInteract;
         }
         else
         {
-            canInteract = false;
+            CanInteract = false;
             playerInputs.AnnounceInteract -= TryInteract;
         }
     }
 
     private void TryInteract(bool inputPressed)
     {
-        if (inputPressed && nearbyInteractable != null)
+        if (inputPressed && nearbyInteractable != null && CanInteract && !interactDisabled)
         {
             if(nearbyInteractable.canInteractWith)
                 AnnounceNearbyInteractable?.Invoke(nearbyInteractable);

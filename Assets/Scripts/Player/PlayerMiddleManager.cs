@@ -35,14 +35,14 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
     {
         if (input)
         {
-            playerInteract.CanInteract = false;
+            playerInteract.interactDisabled = true;
             playerMovementHandler.CanLook = false;
             playerMovementHandler.CanMove = false;
             Cursor.visible = true;
         }
         else
         {
-            playerInteract.CanInteract = true;
+            playerInteract.interactDisabled = false;
             playerMovementHandler.CanLook = true;
             playerMovementHandler.CanMove = true;
             Cursor.visible = false;

@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: locked
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1403334094459023410, guid: 524127f90ed01d0448de39d063851736, type: 3}
+      propertyPath: canUnlock
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5104370955275867673, guid: 524127f90ed01d0448de39d063851736, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -10,22 +10,29 @@ public class Spawner : MonoBehaviour
     public List<SpawnLocation> spawnLocations = new List<SpawnLocation>();
     public GameObject spawnedObjsParentObj;
 
-    private Vector3 playerSpawnTransform;
-    private Quaternion playerSpawnRotation;
+    public GameObject spawnedPlayer;
+    public Vector3 playerSpawnPosition;
+    public Quaternion playerSpawnRotation;
 
     public Dictionary<SpawnType, GameObject> objsDict;
     public Dictionary<SpawnLocation, GameObject> spawnedObjsDict = new Dictionary<SpawnLocation, GameObject>();
+
+    //weird shouldnt go here
+    public DoorManager doorManager;
+    
+    public bool initialised=false;
 
     void Start()
     {
         objsDict = new Dictionary<SpawnType, GameObject>()
         {
             { SpawnType.Player , playerPrefab },
-            { SpawnType.Board, boardPrefab },
+            { SpawnType.CardboardMannequin, boardPrefab },
             { SpawnType.FollowMannequin, followMannequinPrefab }
         };
-
-        Spawn();
+        initialised = true;
+        
+        SpawnPlayer();
     }
 
     public void Spawn()
@@ -59,9 +66,6 @@ public class Spawner : MonoBehaviour
 
         if (loc.spawnType == SpawnType.Player)
         {
-            playerSpawnTransform = loc.transform.position;
-            playerSpawnRotation = loc.transform.rotation;
-
             Health HP = obj.GetComponent<Health>();
             if (HP != null)
             {
@@ -74,11 +78,66 @@ public class Spawner : MonoBehaviour
         obj.SetActive(true);
     }
 
+    public void SpawnPlayer()
+    {
+        //seems bad make separate
+        //repeating code
+        foreach (SpawnLocation loc in spawnLocations)
+        {
+            if (loc.spawnType != SpawnType.Player)
+                continue;
+
+            playerSpawnPosition = loc.transform.position;
+            playerSpawnRotation = loc.transform.rotation;
+
+            if (spawnedPlayer == null)
+            {
+                spawnedPlayer = Instantiate(playerPrefab, playerSpawnPosition, playerSpawnRotation);
+                Health HP = spawnedPlayer.GetComponent<Health>();
+                if (HP != null)
+                {
+                    HP.AnnounceIsAlive -= Respawn;
+                    HP.Rez();
+                    HP.AnnounceIsAlive += Respawn;
+                }
+            }
+            else
+            {
+                ResetPlayer();
+            }
+
+            loc.gameObject.SetActive(false);
+            break;
+        }
+    }
+
+    private void ResetPlayer()
+    {
+        if (spawnedPlayer == null)
+            return;
+
+        doorManager.ResetDoors();
+        
+        spawnedPlayer.transform.position = playerSpawnPosition;
+        spawnedPlayer.transform.rotation = playerSpawnRotation;
+
+        Health HP = spawnedPlayer.GetComponent<Health>();
+        if (HP != null)
+        {
+            HP.AnnounceIsAlive -= Respawn;
+            HP.Rez();
+            HP.AnnounceIsAlive += Respawn;
+        }
+
+        spawnedPlayer.SetActive(true);
+    }
+
     public void Respawn(bool input)
     {
         if (!input)
         {
-            Spawn(); // Just repositions and resets; no destruction
+            Spawn();
+            ResetPlayer();
         }
     }
 }

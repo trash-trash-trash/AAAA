@@ -6,6 +6,8 @@ public class Interactable : MonoBehaviour, IInteractable
 {
     public Transform iInteractTransform;
 
+    public string interactString="";
+
     public bool canInteractWith = true;
     public bool iInteractInRangeToInteract = false;
 
@@ -15,7 +17,7 @@ public class Interactable : MonoBehaviour, IInteractable
 
     public virtual string InteractString()
     {
-        return "";
+        return interactString;
     }
 
     //change to ontriggerstay? note this will trigger every frame while overlapped
@@ -31,6 +33,10 @@ public class Interactable : MonoBehaviour, IInteractable
             IInteract iInteract = other.GetComponent<IInteract>();
             if (iInteract != null)
             {
+                if (!iInteract.ReturnCanInteract())
+                {
+                    interactString = "";
+                }
                 iInteract.SetNearbyInteractable(this);
                 OnIInteractEntered(other.transform);
             }

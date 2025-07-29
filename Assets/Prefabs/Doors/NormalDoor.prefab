@@ -290,11 +290,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed764ee3877f184e82396c0d1a201f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  iInteractTransform: {fileID: 0}
+  interactString: 
   canInteractWith: 1
-  playerInRangeToInteract: 0
+  iInteractInRangeToInteract: 0
+  locked: 0
+  canUnlock: 1
+  key: {fileID: 0}
   opensInwards: 0
   open: 0
   isOpening: 0

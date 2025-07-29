@@ -33,7 +33,7 @@ public class Inventory : MonoBehaviour
 
       if (input)
       {
-         if (!inventoryOpen)
+         if (!inventoryOpen && playerItems.Count > 0)
          {
             inventoryOpen = true;
             SelectItem(selectIndex);
@@ -126,6 +126,7 @@ public class Inventory : MonoBehaviour
          RemoveItem(item);
       }
       playerItems.Clear();
+      AnnounceOpenCloseInventory?.Invoke(false);
    }
 
    void OnDisable()

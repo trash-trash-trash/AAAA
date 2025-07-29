@@ -1,6 +1,6 @@
 public enum SpawnType
 {
-    Board,
+    CardboardMannequin,
     FollowMannequin,
     Player
 }

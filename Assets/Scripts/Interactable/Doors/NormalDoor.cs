@@ -87,9 +87,24 @@ public class NormalDoor : Door
 
     public override string InteractString()
     {
-        if (!open) 
-            return "OPEN DOOR";
+        if (!locked && canUnlock)
+        {
+            if (!open)
+                interactString = "E: OPEN DOOR";
 
-        return "CLOSE DOOR";
+            else
+                interactString = "E: CLOSE DOOR";
+        }
+
+        return interactString;
+    }
+
+    public override void ResetDoor()
+    {
+        StopAllCoroutines();
+        base.ResetDoor();
+        pivot.rotation = initialRotation;
+        open = false;
+        isOpening = false;
     }
 }

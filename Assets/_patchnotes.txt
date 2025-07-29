@@ -80,5 +80,16 @@ TODO: danni zero 3D models out correctly!!!
 
 -- updated Items to remove from Player Inventory and respawn on Player death
 
-TODO: Defactor Spawner
+TODO: Refactor Spawner
 TODO: Update Player Location / spawnedLocations to use when Player advances (checkpoint)
+
+1.9
+
+-- updated Spawner with more hack stuff, plz refactor
+
+-- added LevelTriggers and LevelManager. LevelManager resets stuff when the player dies (works for doors and enemies and items)
+
+-- continued to "fix" InteractText
+
+TODO: fix items disappearing if used and then died before reaching checkpoint
+TODO: turn doors impassable after clearing checkpoint and turn off inaccessible enemies

@@ -12,6 +12,8 @@ public interface IInteract
     public void FlipCanInteract(bool input);
 
     public void SetNearbyInteractable(Interactable interactable);
+
+    public bool ReturnCanInteract();
 }
 
 public interface IPlayer

@@ -11,7 +11,7 @@ public class SlidingDoor : Door
     private Vector3 openPosition;
 
     private bool open = false;
-    private bool isMoving = false;
+    private bool isOpening = false;
 
     void Start()
     {
@@ -38,7 +38,7 @@ public class SlidingDoor : Door
 
     IEnumerator OpenCloseDoorCoro()
     {
-        isMoving = true;
+        isOpening = true;
         canInteractWith = false;
 
         Vector3 start = slideTarget.localPosition;
@@ -58,7 +58,7 @@ public class SlidingDoor : Door
         slideTarget.localPosition = end;
 
         open = !open;
-        isMoving = false;
+        isOpening = false;
         canInteractWith = true;
     }
 
@@ -67,11 +67,21 @@ public class SlidingDoor : Door
         if (canInteractWith)
             OpenCloseDoor();
     }
-
+    
     public override string InteractString()
     {
-        return open ? "CLOSE DOOR" : "OPEN DOOR";
+        if (!locked && canUnlock)
+        {
+            if (!open)
+                interactString = "E: OPEN DOOR";
+
+            else
+                interactString = "E: CLOSE DOOR";
+        }
+
+        return interactString;
     }
+    
     private float GetSlideAmount(Transform target, Vector3 direction)
     {
         Collider coll = target.GetComponent<Collider>();
@@ -87,5 +97,14 @@ public class SlidingDoor : Door
             return size.z;
 
         return 1f; // fallback
+    }
+    
+    public override void ResetDoor()
+    {
+        StopAllCoroutines();
+        base.ResetDoor();
+        slideTarget.localPosition = closedPosition;
+        open = false;
+        isOpening = false;
     }
 }
