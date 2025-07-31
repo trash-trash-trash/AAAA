@@ -10,7 +10,6 @@ public class SlidingDoor : Door
     private Vector3 closedPosition;
     private Vector3 openPosition;
 
-    private bool open = false;
     private bool isOpening = false;
 
     void Start()
@@ -66,20 +65,6 @@ public class SlidingDoor : Door
     {
         if (canInteractWith)
             OpenCloseDoor();
-    }
-    
-    public override string InteractString()
-    {
-        if (!locked && canUnlock)
-        {
-            if (!open)
-                interactString = "E: OPEN DOOR";
-
-            else
-                interactString = "E: CLOSE DOOR";
-        }
-
-        return interactString;
     }
     
     private float GetSlideAmount(Transform target, Vector3 direction)

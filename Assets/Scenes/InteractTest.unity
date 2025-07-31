@@ -1130,6 +1130,11 @@ MonoBehaviour:
   - {fileID: 1020642352533966369}
   - {fileID: 827690265}
   spawnedObjsParentObj: {fileID: 1669944436}
+  spawnedPlayer: {fileID: 0}
+  playerSpawnPosition: {x: 0, y: 0, z: 0}
+  playerSpawnRotation: {x: 0, y: 0, z: 0, w: 0}
+  doorManager: {fileID: 0}
+  initialised: 0
 --- !u!1001 &322962172
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1556,7 +1561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &410087040
 Light:
   m_ObjectHideFlags: 0
@@ -1998,6 +2003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iInteractTransform: {fileID: 0}
+  interactString: 
   canInteractWith: 1
   iInteractInRangeToInteract: 0
   itemSO: {fileID: 11400000, guid: c142e5f114d6ba842942a254a10877ab, type: 2}
@@ -3691,6 +3697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iInteractTransform: {fileID: 0}
+  interactString: 
   canInteractWith: 1
   iInteractInRangeToInteract: 0
   lightOn: 0
@@ -3733,6 +3740,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iInteractTransform: {fileID: 0}
+  interactString: 
   canInteractWith: 1
   iInteractInRangeToInteract: 0
   itemSO: {fileID: 11400000, guid: bb957afcfbafcf340911960fa979d686, type: 2}
@@ -5137,9 +5145,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iInteractTransform: {fileID: 0}
+  interactString: 
   canInteractWith: 1
   iInteractInRangeToInteract: 0
   locked: 0
+  canUnlock: 0
   key: {fileID: 0}
   slideTarget: {fileID: 1572539230}
   slideDirection: {x: 0, y: 0, z: 1}
@@ -5404,6 +5414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iInteractTransform: {fileID: 0}
+  interactString: 
   canInteractWith: 1
   iInteractInRangeToInteract: 0
   itemSO: {fileID: 11400000, guid: 55e806e6ebc83ba4e821341367e01b75, type: 2}
@@ -6812,6 +6823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iInteractTransform: {fileID: 0}
+  interactString: 
   canInteractWith: 1
   iInteractInRangeToInteract: 0
   itemSO: {fileID: 11400000, guid: bdbe6233758780d4a9d8d51a323936f8, type: 2}
@@ -7562,6 +7574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iInteractTransform: {fileID: 0}
+  interactString: 
   canInteractWith: 1
   iInteractInRangeToInteract: 0
   itemSO: {fileID: 11400000, guid: 5b095b00d94a89d44a34e89621b5eaa9, type: 2}

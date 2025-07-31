@@ -11,6 +11,10 @@ public class Interactable : MonoBehaviour, IInteractable
     public bool canInteractWith = true;
     public bool iInteractInRangeToInteract = false;
 
+    private bool triggerStay = false;
+
+    private bool active = false;
+
     public virtual void Interact()
     {
     }
@@ -19,6 +23,7 @@ public class Interactable : MonoBehaviour, IInteractable
     {
         return interactString;
     }
+    
 
     //change to ontriggerstay? note this will trigger every frame while overlapped
     public virtual void OnTriggerStay(Collider other)
@@ -59,6 +64,8 @@ public class Interactable : MonoBehaviour, IInteractable
             {
                 CloseInteractable(iInteract);
             }
+
+            active = false;
         }
     }
 

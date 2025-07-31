@@ -12,6 +12,7 @@ public class Inventory : MonoBehaviour
    [SerializeField]
    public ItemSO selectedItem;
    public List<ItemSO> playerItems = new List<ItemSO>();
+   public List<ItemSO> usedItems = new List<ItemSO>();
 
    public PlayerInputHandler playerInputs;
 
@@ -109,7 +110,10 @@ public class Inventory : MonoBehaviour
    public void RemoveItem(ItemSO newItem)
    {
       if (playerItems.Contains(newItem))
+      {
          playerItems.Remove(newItem);
+         usedItems.Add(newItem);
+      }
       
       if (selectIndex >= playerItems.Count)
          selectIndex = Mathf.Max(0, playerItems.Count - 1);
@@ -119,7 +123,9 @@ public class Inventory : MonoBehaviour
 
    public void Reset()
    {
-      List<ItemSO> itemsToRemove = new List<ItemSO>(playerItems);
+      List<ItemSO> itemsToRemove = new List<ItemSO>();
+      itemsToRemove.AddRange(playerItems);
+      itemsToRemove.AddRange(usedItems);
       foreach (var item in itemsToRemove)
       {
          item.Reset();

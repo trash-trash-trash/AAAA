@@ -5,13 +5,17 @@ using UnityEngine;
 public class Door : Interactable
 {
     public bool locked = false;
+    public bool open = false;
     public bool canUnlock = false;
+    private bool hasKey = false;
 
     private bool originalLocked;
     private bool originalCanUnlock;
 
     public ItemSO key;
 
+    private Inventory inventory;
+    
     void OnEnable()
     {
         originalLocked = locked;
@@ -24,30 +28,35 @@ public class Door : Interactable
 
     public override void OnTriggerStay(Collider other)
     {
-        base.OnTriggerStay(other);
-        if(iInteractTransform!=null){
-            if (locked)
+        if(iInteractTransform!=null)
+            inventory = iInteractTransform.GetComponent<Inventory>();
+        // Always do the check dynamically
+        hasKey = false;
+        canUnlock = false;
+
+        if (locked && inventory != null)
+        {
+            if (inventory.playerItems.Contains(key))
             {
-                Inventory inventory = iInteractTransform.GetComponent<Inventory>();
-                if (inventory != null)
-                {
-                    if (inventory.playerItems.Contains(key))
-                    {
-                        if (inventory.selectedItem == key)
-                        {
-                            canUnlock = true;
-                            interactString = "E: UNLOCK";
-                        }
-                        else
-                        {
-                            canUnlock = false;
-                            interactString = "KEY NOT EQUIPPED!";
-                        }
-                    }
-                }
+                hasKey = true;
+                canUnlock = inventory.selectedItem == key;
             }
         }
+        base.OnTriggerStay(other);
     }
+    
+    public override string InteractString()
+    {
+        if (locked)
+        {
+            if (!hasKey) return "LOCKED. FIND THE KEY";
+            if (!canUnlock) return "KEY NOT EQUIPPED!";
+            return "E: UNLOCK";
+        }
+
+        return open ? "E: CLOSE DOOR" : "E: OPEN DOOR";
+    }
+
 
     public virtual void ResetDoor()
     {
@@ -57,12 +66,6 @@ public class Door : Interactable
 
     public virtual void TryUnlock()
     {
-        if (!canUnlock)
-        {
-            interactString = "LOCKED! FIND KEY!";
-            return;
-        }
-        
         Inventory inventory = iInteractTransform.GetComponent<Inventory>();
         if (inventory.selectedItem == key)
         {

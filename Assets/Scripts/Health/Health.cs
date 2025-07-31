@@ -14,13 +14,11 @@ public class Health : MonoBehaviour
     public void Kill()
     {
         ChangeHealth(-666);
-        Debug.Log("Killed!");
     }
 
     public void Rez()
     {
         ChangeHealth(maxHealth);
-        Debug.Log("Alive!");
     }
 
     public void ChangeHealth(int amount)

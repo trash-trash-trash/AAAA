@@ -91,5 +91,13 @@ TODO: Update Player Location / spawnedLocations to use when Player advances (che
 
 -- continued to "fix" InteractText
 
-TODO: fix items disappearing if used and then died before reaching checkpoint
+DONE: fix items disappearing if used and then died before reaching checkpoint
 TODO: turn doors impassable after clearing checkpoint and turn off inaccessible enemies
+
+2.0
+
+-- fixed items disappearing on death
+
+-- added Mirror prefab, Mirror.cs to automate mirrors (not perfect... RawImage must be flipped depending on where mirror is placed and resolution could be better?)
+
+-- added Cinemachine (untouched so far)

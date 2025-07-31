@@ -5,7 +5,6 @@ using UnityEngine;
 public class NormalDoor : Door
 {
     public bool opensInwards = false;
-    public bool open = false;
     public bool isOpening = false;
 
     public Transform pivot;
@@ -85,20 +84,6 @@ public class NormalDoor : Door
             OpenCloseDoor();
     }
 
-    public override string InteractString()
-    {
-        if (!locked && canUnlock)
-        {
-            if (!open)
-                interactString = "E: OPEN DOOR";
-
-            else
-                interactString = "E: CLOSE DOOR";
-        }
-
-        return interactString;
-    }
-
     public override void ResetDoor()
     {
         StopAllCoroutines();
@@ -106,5 +91,6 @@ public class NormalDoor : Door
         pivot.rotation = initialRotation;
         open = false;
         isOpening = false;
+        canInteractWith = true;
     }
 }
