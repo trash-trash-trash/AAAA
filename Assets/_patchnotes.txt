@@ -91,7 +91,7 @@ TODO: Update Player Location / spawnedLocations to use when Player advances (che
 
 -- continued to "fix" InteractText
 
-DONE: fix items disappearing if used and then died before reaching checkpoint
+TODO DONE: fix items disappearing if used and then died before reaching checkpoint
 TODO: turn doors impassable after clearing checkpoint and turn off inaccessible enemies
 
 2.0
@@ -101,3 +101,19 @@ TODO: turn doors impassable after clearing checkpoint and turn off inaccessible 
 -- added Mirror prefab, Mirror.cs to automate mirrors (not perfect... RawImage must be flipped depending on where mirror is placed and resolution could be better?)
 
 -- added Cinemachine (untouched so far)
+
+2.1
+
+-- added AAAGameManager Singleton. added Difficulty. updated AI and PlayerHealth to use Difficulty
+TODO: playermiddleman is also an Instance/Singleton, change Spawner to identify Player Transform to AI
+
+-- added HealthPlayerView to show health. toggle testing to display
+TODO: Update health on start correctly
+
+-- certains ItemSOs are now useable
+
+-- using Items have an effect, removes the item and closes the inventory if its the last one
+
+-- added placeholder sprites
+
+TODO: door triggers still dont seem to update correctly first time entering?

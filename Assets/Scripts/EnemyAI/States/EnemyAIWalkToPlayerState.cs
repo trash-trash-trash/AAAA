@@ -6,6 +6,8 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
 {
     //TODO: make this smarter
     public Transform playerTransform;
+    
+    //this script has a lot of power... refactor
 
     private bool huntingPlayer = false;
 
@@ -14,6 +16,8 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
     public float minUpdateDistance = 0.5f;
     
     public float minKillDist = 7f;
+
+    public bool hasDamaged = false;
     
     public override void OnEnable()
     {
@@ -53,7 +57,7 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
     
     void FixedUpdate()
     {
-        if (!huntingPlayer || !agent.enabled) return;
+        if (!huntingPlayer || !agent.enabled || hasDamaged) return;
 
         if (Vector3.Distance(agent.destination, playerTransform.position) > minUpdateDistance)
         {
@@ -70,8 +74,14 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
         if (currentDist < minKillDist)
         {
             Health HP = playerTransform.GetComponent<Health>();
-            HP.Kill();
-            Debug.Log(Vector3.Distance(agent.transform.position, playerTransform.position));
+            
+            if(AAAGameManager.Instance.currentDifficulty == Difficulty.Normal)
+                HP.ChangeHealth(-1);
+            
+           else
+                HP.Kill();
+            
+            hasDamaged = true;
         }
     }
 

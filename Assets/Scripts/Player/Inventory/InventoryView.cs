@@ -9,6 +9,7 @@ public class InventoryView : MonoBehaviour
 {
     public Inventory inventory;
 
+    public GameObject inventoryParentObj;
     public GameObject gridParentObj;
     public GameObject itemSlotPrefab;
 
@@ -16,6 +17,8 @@ public class InventoryView : MonoBehaviour
 
     public Button leftArrow;
     public Button rightArrow;
+
+    public TMP_Text inventoryText;
 
     void Awake()
     {
@@ -33,11 +36,11 @@ public class InventoryView : MonoBehaviour
         if (input)
         {
             RefreshUI();
-            gridParentObj.SetActive(true);
+            inventoryParentObj.SetActive(true);
         }
         else
         {
-            gridParentObj.SetActive(false);
+            inventoryParentObj.SetActive(false);
         }
     }
 
@@ -123,6 +126,15 @@ public class InventoryView : MonoBehaviour
 
             rightArrow.transform.SetParent(gridParentObj.transform, false);
             rightArrow.transform.SetAsLastSibling();
+        }
+
+        if (inventory.selectedItem.useable)
+        {
+            inventoryText.text = inventory.selectedItem.useString;
+        }
+        else
+        {
+            inventoryText.text = "";
         }
     }
 

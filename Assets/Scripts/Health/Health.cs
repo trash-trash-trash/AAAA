@@ -8,20 +8,21 @@ public class Health : MonoBehaviour
     public int currentHealth;
     public int maxHealth = 1;
     private int minHealth = 0;
-
+    
+    public event Action<int> AnnounceCurrentHealth;
     public event Action<bool> AnnounceIsAlive;
     
-    public void Kill()
+    public virtual void Kill()
     {
         ChangeHealth(-666);
     }
 
-    public void Rez()
+    public virtual void Rez()
     {
         ChangeHealth(maxHealth);
     }
 
-    public void ChangeHealth(int amount)
+    public virtual void ChangeHealth(int amount)
     {        
         currentHealth += amount;
       
@@ -30,5 +31,12 @@ public class Health : MonoBehaviour
         isAlive = currentHealth > minHealth;
         
         AnnounceIsAlive?.Invoke(isAlive);
+        AnnounceCurrentHealth?.Invoke(currentHealth);
+    }
+
+    public virtual void ChangeMaxHealth(int amount)
+    {
+        maxHealth += amount;
+        ChangeHealth(currentHealth);
     }
 }

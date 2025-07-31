@@ -16,13 +16,31 @@ public class Inventory : MonoBehaviour
 
    public PlayerInputHandler playerInputs;
 
+   public ItemUseCase itemUseCase;
+
    public event Action<bool> AnnounceOpenCloseInventory;
    public event Action<int> AnnounceSelectIndex;
 
    public void Awake()
    {
+      playerInputs.AnnounceInteract += AttemptUseItem;
       playerInputs.AnnounceInventory += OpenCloseInventory;
       playerInputs.AnnounceMoveVector2 += ScrollInventory;
+   }
+
+   private void AttemptUseItem(bool obj)
+   {
+      if (!obj)
+      {
+         if (!inventoryOpen)
+            return;
+
+         if (selectedItem.useable)
+         {
+            itemUseCase.Use(selectedItem);
+            RemoveItem(selectedItem);
+         }
+      }
    }
 
    //opening inventory stops the player from being able to move
@@ -44,6 +62,7 @@ public class Inventory : MonoBehaviour
          {
             inventoryOpen = false;
             AnnounceOpenCloseInventory?.Invoke(false);
+            Debug.Log("closed");
          }
       }
    }
@@ -107,17 +126,24 @@ public class Inventory : MonoBehaviour
    }
 
 
-   public void RemoveItem(ItemSO newItem)
+   public void RemoveItem(ItemSO itemToRemove)
    {
-      if (playerItems.Contains(newItem))
+      if (playerItems.Contains(itemToRemove))
       {
-         playerItems.Remove(newItem);
-         usedItems.Add(newItem);
+         playerItems.Remove(itemToRemove);
+         usedItems.Add(itemToRemove);
       }
-      
-      if (selectIndex >= playerItems.Count)
-         selectIndex = Mathf.Max(0, playerItems.Count - 1);
 
+      if (playerItems.Count == 0)
+      {
+         selectedItem = null;
+         selectIndex = 0;
+         inventoryOpen = false;
+         AnnounceOpenCloseInventory?.Invoke(false);
+         return;
+      }
+
+      selectIndex = Mathf.Clamp(selectIndex, 0, playerItems.Count - 1);
       SelectItem(selectIndex);
    }
 
@@ -137,6 +163,8 @@ public class Inventory : MonoBehaviour
 
    void OnDisable()
    {
+      playerInputs.AnnounceInteract -= AttemptUseItem;
       playerInputs.AnnounceInventory -= OpenCloseInventory;
+      playerInputs.AnnounceMoveVector2 -= ScrollInventory;
    }
 }

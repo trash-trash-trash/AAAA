@@ -5,7 +5,6 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
 {
     public static PlayerMiddleManager Instance { get; private set; }
 
-    public Transform cameraRoot;
     public Inventory inventory;
     public Health health;
     public PlayerInteract playerInteract;
@@ -24,11 +23,6 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
         {
             inventory.Reset();
         }
-    }
-
-    public Transform ReturnCameraRoot()
-    {
-        return cameraRoot;
     }
     
     private void StopStartMoveLook(bool input)
@@ -49,13 +43,14 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
         }
     }
 
-    void OnDisable()
-    {
-        inventory.AnnounceOpenCloseInventory -= StopStartMoveLook;
-    }
-
     public Transform ReturnTransform()
     {
         return transform;
+    }
+    
+    void OnDisable()
+    {
+        inventory.AnnounceOpenCloseInventory -= StopStartMoveLook;
+        health.AnnounceIsAlive -= ResetInventory;
     }
 }

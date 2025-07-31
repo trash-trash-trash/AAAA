@@ -9,8 +9,10 @@ public class ItemSO : ScriptableObject
     
     public string itemName;
     public Sprite icon;
-    public GameObject prefab;
 
+    public bool useable;
+    public string useString;
+    
     public void Reset()
     {
         AnnounceReset?.Invoke();
