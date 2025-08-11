@@ -117,3 +117,13 @@ TODO: Update health on start correctly
 -- added placeholder sprites
 
 TODO: door triggers still dont seem to update correctly first time entering?
+
+2.2
+
+-- updated WalkToPlayer with instant snapping for creepier feel
+
+TODO: swapping back to rigid body from NavMeshAgent causes slight wobble
+
+-- added PauseMenu with Idle, Pause, Options and Quit states. Player can now Pause the game by hitting escape.
+
+-- updated Inventory and PlayerMiddleMan to turn off player abilities while paused 

@@ -39,35 +39,42 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
             yield return new WaitForFixedUpdate();
             yield return null;
         }       
+
         agent.enabled = true;
+
         NavMeshHit hit;
         if (NavMesh.SamplePosition(transform.position, out hit, 5f, NavMesh.AllAreas))
         {
             agent.Warp(hit.position);
         }
-        Vector3 direction = agent.desiredVelocity.normalized;
-        if (direction != Vector3.zero)
-        {
-            agent.transform.rotation = Quaternion.LookRotation(direction);
-        }
+
         agent.SetDestination(playerTransform.position);
+
+        //turns agent rotation off, snaps look at the player, turns it back on
+        agent.updateRotation = false;
+        Vector3 lookDir = playerTransform.position - transform.position;
+        lookDir.y = 0f;
+        if (lookDir.sqrMagnitude > 0.0001f)
+        {
+            agent.transform.rotation = Quaternion.LookRotation(lookDir.normalized);
+        }
+        agent.updateRotation = true;
+
         agent.isStopped = false;
         huntingPlayer = true;
     }
+
     
     void FixedUpdate()
     {
+        if (!agent.hasPath)
+            return;
+       
         if (!huntingPlayer || !agent.enabled || hasDamaged) return;
 
         if (Vector3.Distance(agent.destination, playerTransform.position) > minUpdateDistance)
         {
             agent.SetDestination(playerTransform.position);
-        }
-
-        Vector3 direction = agent.desiredVelocity.normalized;
-        if (direction != Vector3.zero)
-        {
-            agent.transform.rotation = Quaternion.LookRotation(direction);
         }
 
         currentDist = Vector3.Distance(agent.transform.position, playerTransform.position);

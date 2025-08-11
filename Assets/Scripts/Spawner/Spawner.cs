@@ -97,6 +97,7 @@ public class Spawner : MonoBehaviour
                 if (HP != null)
                 {
                     HP.AnnounceIsAlive -= Respawn;
+                    Debug.Log("hahadha");
                     HP.Rez();
                     HP.AnnounceIsAlive += Respawn;
                 }

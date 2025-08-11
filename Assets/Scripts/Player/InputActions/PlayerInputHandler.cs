@@ -15,11 +15,15 @@ public class PlayerInputHandler : MonoBehaviour
     
     public event Action<Vector2> AnnounceMoveVector2;
 
+    public Action<bool> AnnounceQuit;
+    
     public event Action<bool> AnnounceSprint;
+    
 
     private void Awake()
     {
         controls = new PlayerActions();
+
 
         controls.InGameActions.Interact.performed += OnInteract;
         controls.InGameActions.Interact.canceled += OnInteract;
@@ -34,15 +38,12 @@ public class PlayerInputHandler : MonoBehaviour
         
         controls.InGameActions.Move.performed += OnMove;
         controls.InGameActions.Move.canceled += OnMove;
+        
+        controls.InGameActions.Quit.performed += OnQuit;
+        controls.InGameActions.Quit.canceled += OnQuit;
 
         controls.InGameActions.Sprint.performed += OnSprint;
         controls.InGameActions.Sprint.canceled += OnSprint;
-    }
-
-    private void OnScroll(InputAction.CallbackContext context)
-    {
-        Vector2 delta = context.ReadValue<Vector2>();
-        AnnounceScroll?.Invoke(delta);
     }
 
     private void OnEnable()
@@ -50,6 +51,20 @@ public class PlayerInputHandler : MonoBehaviour
         controls.Enable();
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+    }
+    
+    private void OnQuit(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            AnnounceQuit?.Invoke(true);
+        else
+            AnnounceQuit?.Invoke(false);
+    }
+
+    private void OnScroll(InputAction.CallbackContext context)
+    {
+        Vector2 delta = context.ReadValue<Vector2>();
+        AnnounceScroll?.Invoke(delta);
     }
 
     private void OnInteract(InputAction.CallbackContext context)
@@ -112,8 +127,12 @@ public class PlayerInputHandler : MonoBehaviour
         controls.InGameActions.Interact.canceled -= OnInteract;
         controls.InGameActions.Inventory.performed -= OnInventory;
         controls.InGameActions.Inventory.canceled -= OnInventory;
+        controls.InGameActions.Look.performed -= OnLook;
+        controls.InGameActions.Look.canceled -= OnLook;
         controls.InGameActions.Move.performed -= OnMove;
         controls.InGameActions.Move.canceled -= OnMove;
+        controls.InGameActions.Quit.performed -= OnQuit;
+        controls.InGameActions.Quit.canceled -= OnQuit;
         controls.InGameActions.Sprint.performed -= OnSprint;
         controls.InGameActions.Sprint.canceled -= OnSprint;
     }

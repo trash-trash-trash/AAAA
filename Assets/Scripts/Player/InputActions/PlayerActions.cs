@@ -80,6 +80,15 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Quit"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ca70168-4545-4f32-843a-b17d33f5304b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -258,6 +267,17 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""MouseScroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""579f635f-c798-4222-a1ea-a889eae660c7"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -289,6 +309,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_InGameActions_Look = m_InGameActions.FindAction("Look", throwIfNotFound: true);
         m_InGameActions_Sprint = m_InGameActions.FindAction("Sprint", throwIfNotFound: true);
         m_InGameActions_MouseScroll = m_InGameActions.FindAction("MouseScroll", throwIfNotFound: true);
+        m_InGameActions_Quit = m_InGameActions.FindAction("Quit", throwIfNotFound: true);
     }
 
     ~@PlayerActions()
@@ -361,6 +382,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGameActions_Look;
     private readonly InputAction m_InGameActions_Sprint;
     private readonly InputAction m_InGameActions_MouseScroll;
+    private readonly InputAction m_InGameActions_Quit;
     public struct InGameActionsActions
     {
         private @PlayerActions m_Wrapper;
@@ -371,6 +393,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_InGameActions_Look;
         public InputAction @Sprint => m_Wrapper.m_InGameActions_Sprint;
         public InputAction @MouseScroll => m_Wrapper.m_InGameActions_MouseScroll;
+        public InputAction @Quit => m_Wrapper.m_InGameActions_Quit;
         public InputActionMap Get() { return m_Wrapper.m_InGameActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -398,6 +421,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @MouseScroll.started += instance.OnMouseScroll;
             @MouseScroll.performed += instance.OnMouseScroll;
             @MouseScroll.canceled += instance.OnMouseScroll;
+            @Quit.started += instance.OnQuit;
+            @Quit.performed += instance.OnQuit;
+            @Quit.canceled += instance.OnQuit;
         }
 
         private void UnregisterCallbacks(IInGameActionsActions instance)
@@ -420,6 +446,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @MouseScroll.started -= instance.OnMouseScroll;
             @MouseScroll.performed -= instance.OnMouseScroll;
             @MouseScroll.canceled -= instance.OnMouseScroll;
+            @Quit.started -= instance.OnQuit;
+            @Quit.performed -= instance.OnQuit;
+            @Quit.canceled -= instance.OnQuit;
         }
 
         public void RemoveCallbacks(IInGameActionsActions instance)
@@ -454,5 +483,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnMouseScroll(InputAction.CallbackContext context);
+        void OnQuit(InputAction.CallbackContext context);
     }
 }

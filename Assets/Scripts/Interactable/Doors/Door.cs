@@ -15,9 +15,16 @@ public class Door : Interactable
     public ItemSO key;
 
     private Inventory inventory;
+
+    public bool foreverLocked = false;
     
     void OnEnable()
     {
+        if (foreverLocked)
+        {
+            originalLocked = true;
+            originalCanUnlock = false;
+        }
         originalLocked = locked;
         originalCanUnlock = canUnlock;
     }
@@ -28,6 +35,9 @@ public class Door : Interactable
 
     public override void OnTriggerStay(Collider other)
     {
+        if (foreverLocked)
+            return;
+        
         if(iInteractTransform!=null)
             inventory = iInteractTransform.GetComponent<Inventory>();
         // Always do the check dynamically
@@ -47,6 +57,8 @@ public class Door : Interactable
     
     public override string InteractString()
     {
+        if (foreverLocked)
+            return "";
         if (locked)
         {
             if (!hasKey) return "LOCKED. FIND THE KEY";

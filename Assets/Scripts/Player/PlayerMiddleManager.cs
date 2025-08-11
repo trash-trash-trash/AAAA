@@ -5,15 +5,18 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
 {
     public static PlayerMiddleManager Instance { get; private set; }
 
+    public AAAGameManager gameManager;
     public Inventory inventory;
     public Health health;
     public PlayerInteract playerInteract;
     public PlayerMovementHandler playerMovementHandler;
-
+    
     void Awake()
     {
         Instance = this;
-        inventory.AnnounceOpenCloseInventory += StopStartMoveLook;
+        inventory.AnnounceOpenCloseInventory += FlipPlayerLookMovement;
+        gameManager = AAAGameManager.Instance;
+        gameManager.AnnouncePause += StopStartMoveLook;
         health.AnnounceIsAlive += ResetInventory;
     }
 
@@ -26,6 +29,13 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
     }
     
     private void StopStartMoveLook(bool input)
+    {
+        FlipCanAccessInventory(!input);
+        if(!inventory.inventoryOpen)
+            FlipPlayerLookMovement(input);
+    }
+
+    private void FlipPlayerLookMovement(bool input)
     {
         if (input)
         {
@@ -42,6 +52,12 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
             Cursor.visible = false;
         }
     }
+    
+    private void FlipCanAccessInventory(bool paused)
+    {
+        inventory.canOpenInventory = paused;
+        inventory.canUseInventory = paused;
+    }
 
     public Transform ReturnTransform()
     {
@@ -50,7 +66,8 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
     
     void OnDisable()
     {
-        inventory.AnnounceOpenCloseInventory -= StopStartMoveLook;
+        gameManager.AnnouncePause -= StopStartMoveLook;
         health.AnnounceIsAlive -= ResetInventory;
+        inventory.AnnounceOpenCloseInventory -= FlipPlayerLookMovement;
     }
 }

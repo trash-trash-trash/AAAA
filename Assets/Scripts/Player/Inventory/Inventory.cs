@@ -6,6 +6,7 @@ public class Inventory : MonoBehaviour
 {
    public bool inventoryOpen = false;
    public bool canOpenInventory = true;
+   public bool canUseInventory = true;
    
    //reset between open/close or remain consistent?
    public int selectIndex = 0;
@@ -30,6 +31,9 @@ public class Inventory : MonoBehaviour
 
    private void AttemptUseItem(bool obj)
    {
+      if (!canOpenInventory)
+         return;
+      
       if (!obj)
       {
          if (!inventoryOpen)
@@ -47,7 +51,7 @@ public class Inventory : MonoBehaviour
    //this is optional, implementing for now to make it feel more strict/constrained for that horror feeling
    private void OpenCloseInventory(bool input)
    {
-      if (!canOpenInventory)
+      if (!canOpenInventory || !canOpenInventory)
          return;
 
       if (input)
@@ -69,7 +73,7 @@ public class Inventory : MonoBehaviour
 
    private void SelectItem(int index)
    {
-      if (playerItems.Count == 0)
+      if (playerItems.Count == 0 || !canOpenInventory)
          return;
 
       selectIndex = Mathf.Clamp(index, 0, playerItems.Count - 1);
@@ -79,7 +83,7 @@ public class Inventory : MonoBehaviour
    
    private void ScrollInventory(Vector2 input)
    {
-      if (!inventoryOpen || playerItems.Count == 0)
+      if (!inventoryOpen || playerItems.Count == 0 || !canOpenInventory)
          return;
       
       int direction = 0;
@@ -109,6 +113,8 @@ public class Inventory : MonoBehaviour
 
    public void LeftButton()
    {
+      if (!canOpenInventory)
+         return;
       int newIndex = selectIndex - 1;
       if (newIndex < 0)
          newIndex = playerItems.Count - 1;
@@ -118,6 +124,8 @@ public class Inventory : MonoBehaviour
 
    public void RightButton()
    {
+      if (!canOpenInventory)
+         return;
       int newIndex = selectIndex + 1;
       if (newIndex >= playerItems.Count)
          newIndex = 0;
