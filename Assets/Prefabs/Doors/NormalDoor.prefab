@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: e867ae876ceaea7459aba9d7d7a2fd6d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -295,10 +295,11 @@ MonoBehaviour:
   canInteractWith: 1
   iInteractInRangeToInteract: 0
   locked: 0
+  open: 0
   canUnlock: 1
   key: {fileID: 0}
+  foreverLocked: 0
   opensInwards: 0
-  open: 0
   isOpening: 0
   pivot: {fileID: 3263552604656309923}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}

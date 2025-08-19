@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,19 +20,24 @@ public class Spawner : MonoBehaviour
 
     //weird shouldnt go here
     public DoorManager doorManager;
-    
-    public bool initialised=false;
 
-    void Start()
+    public bool initialised = false;
+
+    //TODO: CLEAN UP
+    public event Action<GameObject> AnnounceSpawnedPlayer;
+
+    private bool firstTimePlayerSpawning = true;
+
+    void Awake()
     {
         objsDict = new Dictionary<SpawnType, GameObject>()
         {
-            { SpawnType.Player , playerPrefab },
+            { SpawnType.Player, playerPrefab },
             { SpawnType.CardboardMannequin, boardPrefab },
             { SpawnType.FollowMannequin, followMannequinPrefab }
         };
         initialised = true;
-        
+
         SpawnPlayer();
     }
 
@@ -39,8 +45,22 @@ public class Spawner : MonoBehaviour
     {
         foreach (SpawnLocation loc in spawnLocations)
         {
-            if (!objsDict.TryGetValue(loc.spawnType, out GameObject prefabToSpawn))
-                continue;
+            GameObject prefabToSpawn;
+
+// Handle RandomMannequin
+            if (loc.spawnType == SpawnType.RandomMannequin)
+            {
+                float rand = UnityEngine.Random.value; // 0..1
+                if (rand <= 0.13f)
+                    prefabToSpawn = objsDict[SpawnType.FollowMannequin]; // 13% chance
+                else
+                    prefabToSpawn = objsDict[SpawnType.CardboardMannequin];
+            }
+            else
+            {
+                if (!objsDict.TryGetValue(loc.spawnType, out prefabToSpawn))
+                    continue;
+            }
 
             GameObject spawnedObj;
             if (spawnedObjsDict.ContainsKey(loc))
@@ -50,9 +70,18 @@ public class Spawner : MonoBehaviour
             }
             else
             {
-                spawnedObj = Instantiate(prefabToSpawn, loc.transform.position, loc.transform.rotation, spawnedObjsParentObj.transform);
+                spawnedObj = Instantiate(prefabToSpawn, loc.transform.position, loc.transform.rotation,
+                    spawnedObjsParentObj.transform);
                 spawnedObjsDict.Add(loc, spawnedObj);
                 ResetSpawnedObject(spawnedObj, loc);
+            }
+
+            //hack generalise for all enemy AI?
+            if (loc.spawnType == SpawnType.FollowMannequin)
+            {
+                EnemyAIBrain brain = spawnedObj.GetComponent<EnemyAIBrain>();
+                PlayerMiddleManager mm = spawnedPlayer.GetComponent<PlayerMiddleManager>();
+                brain.playerTransform = mm.cameraRoot;
             }
 
             loc.gameObject.SetActive(false);
@@ -80,6 +109,7 @@ public class Spawner : MonoBehaviour
 
     public void SpawnPlayer()
     {
+        //TODO: FIX OR MOVE
         //seems bad make separate
         //repeating code
         foreach (SpawnLocation loc in spawnLocations)
@@ -96,6 +126,12 @@ public class Spawner : MonoBehaviour
                 Health HP = spawnedPlayer.GetComponent<Health>();
                 if (HP != null)
                 {
+                    if (firstTimePlayerSpawning)
+                    {
+                        firstTimePlayerSpawning = false;
+                        AnnounceSpawnedPlayer?.Invoke(spawnedPlayer);
+                    }
+
                     HP.AnnounceIsAlive -= Respawn;
                     Debug.Log("hahadha");
                     HP.Rez();
@@ -118,7 +154,7 @@ public class Spawner : MonoBehaviour
             return;
 
         doorManager.ResetDoors();
-        
+
         spawnedPlayer.transform.position = playerSpawnPosition;
         spawnedPlayer.transform.rotation = playerSpawnRotation;
 

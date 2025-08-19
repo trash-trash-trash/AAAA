@@ -22,6 +22,8 @@ public class Inventory : MonoBehaviour
    public event Action<bool> AnnounceOpenCloseInventory;
    public event Action<int> AnnounceSelectIndex;
 
+   public event Action<bool> AnnounceInventoryFullEmpty;
+
    public void Awake()
    {
       playerInputs.AnnounceInteract += AttemptUseItem;
@@ -66,7 +68,6 @@ public class Inventory : MonoBehaviour
          {
             inventoryOpen = false;
             AnnounceOpenCloseInventory?.Invoke(false);
-            Debug.Log("closed");
          }
       }
    }
@@ -79,6 +80,7 @@ public class Inventory : MonoBehaviour
       selectIndex = Mathf.Clamp(index, 0, playerItems.Count - 1);
       selectedItem = playerItems[selectIndex];
       AnnounceSelectIndex?.Invoke(selectIndex);
+      AnnounceInventoryFullEmpty?.Invoke(true);
    }
    
    private void ScrollInventory(Vector2 input)
@@ -109,6 +111,7 @@ public class Inventory : MonoBehaviour
    public void AddItem(ItemSO newItem)
    {
       playerItems.Add(newItem);
+      AnnounceInventoryFullEmpty?.Invoke(true);
    }
 
    public void LeftButton()
@@ -147,6 +150,7 @@ public class Inventory : MonoBehaviour
          selectedItem = null;
          selectIndex = 0;
          inventoryOpen = false;
+         AnnounceInventoryFullEmpty?.Invoke(false);
          AnnounceOpenCloseInventory?.Invoke(false);
          return;
       }
@@ -166,7 +170,6 @@ public class Inventory : MonoBehaviour
          RemoveItem(item);
       }
       playerItems.Clear();
-      AnnounceOpenCloseInventory?.Invoke(false);
    }
 
    void OnDisable()

@@ -6,6 +6,7 @@ public class PauseIdleState : PauseStateBase
     public override void OnEnable()
     {
         base.OnEnable();
+        brain.canPause = true;
         pauseBackground.SetActive(false);
         brain.FlipPause(false);
         Cursor.visible = false;

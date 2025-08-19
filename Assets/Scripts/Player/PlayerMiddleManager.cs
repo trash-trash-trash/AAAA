@@ -3,17 +3,16 @@ using UnityEngine;
 
 public class PlayerMiddleManager : MonoBehaviour, IPlayer
 {
-    public static PlayerMiddleManager Instance { get; private set; }
-
     public AAAGameManager gameManager;
     public Inventory inventory;
     public Health health;
     public PlayerInteract playerInteract;
     public PlayerMovementHandler playerMovementHandler;
+
+    public Transform cameraRoot;
     
     void Awake()
     {
-        Instance = this;
         inventory.AnnounceOpenCloseInventory += FlipPlayerLookMovement;
         gameManager = AAAGameManager.Instance;
         gameManager.AnnouncePause += StopStartMoveLook;
@@ -61,7 +60,7 @@ public class PlayerMiddleManager : MonoBehaviour, IPlayer
 
     public Transform ReturnTransform()
     {
-        return transform;
+        return cameraRoot;
     }
     
     void OnDisable()

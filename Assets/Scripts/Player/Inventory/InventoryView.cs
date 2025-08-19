@@ -20,10 +20,40 @@ public class InventoryView : MonoBehaviour
 
     public TMP_Text inventoryText;
 
+    public GameObject openCloseInventoryTextObj;
+    public TMP_Text openCloseInventoryText;
+
+    [SerializeField] private bool inventoryHasItems = false;
+
     void Awake()
     {
+        inventory.AnnounceInventoryFullEmpty += ShowOpenCloseInventoryText;
         inventory.AnnounceOpenCloseInventory += OpenCloseInventory;
         inventory.AnnounceSelectIndex += ScrollToItem;
+    }
+
+    private void ShowOpenCloseInventoryText(bool newInventoryHasItems)
+    {
+        inventoryHasItems = newInventoryHasItems;
+        
+        if (inventoryHasItems && inventory.inventoryOpen)
+        {
+            openCloseInventoryText.text = "I - CLOSE";
+        }
+        else if (inventoryHasItems && !inventory.inventoryOpen)
+        {
+            openCloseInventoryText.text = "I - <size=200%><b>I</b></size>NVENTORY";
+        }
+        
+        if (inventoryHasItems)
+        {
+            openCloseInventoryTextObj.SetActive(true);
+        }
+        else
+        {
+            openCloseInventoryTextObj.SetActive(false);
+        }
+        
     }
 
     private void ScrollToItem(int index)
@@ -42,6 +72,8 @@ public class InventoryView : MonoBehaviour
         {
             inventoryParentObj.SetActive(false);
         }
+        
+        ShowOpenCloseInventoryText(inventoryHasItems);
     }
 
     void RefreshUI()
@@ -150,6 +182,7 @@ public class InventoryView : MonoBehaviour
 
     void OnDisable()
     {
+        inventory.AnnounceInventoryFullEmpty -= ShowOpenCloseInventoryText;
         inventory.AnnounceOpenCloseInventory -= OpenCloseInventory;
         inventory.AnnounceSelectIndex -= ScrollToItem;
     }

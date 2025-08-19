@@ -16,16 +16,13 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
     public float minUpdateDistance = 0.5f;
     
     public float minKillDist = 7f;
-
-    public bool hasDamaged = false;
     
     public override void OnEnable()
     {
         base.OnEnable();
         obs.enabled = false;
         rb.useGravity = false;
-        IPlayer player = PlayerMiddleManager.Instance;
-        playerTransform = player.ReturnTransform();
+        playerTransform = brain.playerTransform;
         StartCoroutine(WaitUntilStopped());
     }
 
@@ -70,7 +67,7 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
         if (!agent.hasPath)
             return;
        
-        if (!huntingPlayer || !agent.enabled || hasDamaged) return;
+        if (!huntingPlayer || !agent.enabled) return;
 
         if (Vector3.Distance(agent.destination, playerTransform.position) > minUpdateDistance)
         {
@@ -80,15 +77,13 @@ public class EnemyAIWalkToPlayerState : EnemyAIStateBase
         currentDist = Vector3.Distance(agent.transform.position, playerTransform.position);
         if (currentDist < minKillDist)
         {
-            Health HP = playerTransform.GetComponent<Health>();
+            Health HP = playerTransform.GetComponentInParent<Health>();
             
             if(AAAGameManager.Instance.currentDifficulty == Difficulty.Normal)
                 HP.ChangeHealth(-1);
             
            else
                 HP.Kill();
-            
-            hasDamaged = true;
         }
     }
 

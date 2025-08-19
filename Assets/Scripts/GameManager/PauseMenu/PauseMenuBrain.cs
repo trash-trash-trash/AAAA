@@ -6,18 +6,21 @@ using UnityEngine.Serialization;
 public class PauseMenuBrain : MonoBehaviour
 {
     public PauseMenuStates currentState;
-    
+
     public AAAGameManager gameManager;
     public PlayerInputHandler playerInputs;
     public GameObject idleObj;
+    public GameObject cantPauseObj;
     public GameObject pauseObj;
     public GameObject optionsObj;
     public GameObject quitObj;
-    
+
     public GameObjectStateManager stateManager;
 
     private Dictionary<PauseMenuStates, GameObject> statesDict;
-    
+
+    public bool canPause = true;
+
     void Awake()
     {
         if (statesDict == null)
@@ -25,11 +28,13 @@ public class PauseMenuBrain : MonoBehaviour
             statesDict = new Dictionary<PauseMenuStates, GameObject>()
             {
                 { PauseMenuStates.Idle, idleObj },
+                { PauseMenuStates.CantPause, cantPauseObj },
                 { PauseMenuStates.Paused, pauseObj },
                 { PauseMenuStates.Options, optionsObj },
                 { PauseMenuStates.Quit, quitObj }
             };
         }
+
         gameManager = AAAGameManager.Instance;
         ChangeState(PauseMenuStates.Idle);
         playerInputs.AnnounceQuit += FlipPauseState;
@@ -37,18 +42,20 @@ public class PauseMenuBrain : MonoBehaviour
 
     private void FlipPauseState(bool obj)
     {
-            if(obj)
+        if (!canPause)
+            return;
+        if (obj)
+        {
+            if (currentState == PauseMenuStates.Paused)
             {
-                if(currentState==PauseMenuStates.Paused)
-                {
-                    ChangeState(PauseMenuStates.Idle);
-                }
-                else
-                {
-                    //might be bit too general
-                    ChangeState(PauseMenuStates.Paused);
-                }
+                ChangeState(PauseMenuStates.Idle);
             }
+            else
+            {
+                //might be bit too general
+                ChangeState(PauseMenuStates.Paused);
+            }
+        }
     }
 
     public void ChangeState(PauseMenuStates state)
@@ -59,10 +66,10 @@ public class PauseMenuBrain : MonoBehaviour
             stateManager.ChangeState(obj);
         }
     }
-    
+
     public void FlipPause(bool obj)
     {
-        if(obj)
+        if (obj)
         {
             gameManager.PauseGame(true);
         }
@@ -81,6 +88,7 @@ public class PauseMenuBrain : MonoBehaviour
 public enum PauseMenuStates
 {
     Idle,
+    CantPause,
     Paused,
     Options,
     Quit

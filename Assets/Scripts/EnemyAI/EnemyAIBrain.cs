@@ -19,6 +19,9 @@ public class EnemyAIBrain : MonoBehaviour
 
     public Dictionary<EnemyAIStates, GameObject> statesDict;
 
+    //hack
+    public Transform playerTransform;
+    
     private bool initialized = false;
 
     void OnEnable()

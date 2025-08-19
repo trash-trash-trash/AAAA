@@ -17,10 +17,6 @@ public class PauseQuitState : PauseStateBase
 
     public void ReallyQuit()
     {
-#if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        brain.gameManager.ReallyQuit();
     }
 }

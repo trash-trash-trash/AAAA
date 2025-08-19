@@ -18,6 +18,13 @@ public class LevelManager : MonoBehaviour
     
     public int spawnIndex = 0;
 
+    public LevelTrigger endLevelTrigger;
+    public LevelTrigger endLevelTriggerTest;
+
+    public bool testing = true;
+
+    public event Action AnnounceLevelFinished;
+
     void Start()
     {
         foreach (LevelTrigger trigger in levelTriggers)
@@ -25,8 +32,23 @@ public class LevelManager : MonoBehaviour
             trigger.gameObject.SetActive(false);
             triggerQueue.Enqueue(trigger);
         }
-
+        
+        //seems sloppy for testing
+        if(testing)
+            endLevelTriggerTest.AnnouncePlayerEntered += EndLevel;
+        else
+            endLevelTrigger.AnnouncePlayerEntered += EndLevel;
+       
         StartCoroutine(WaitForSpawner());
+    }
+
+    private void EndLevel(LevelTrigger obj)
+    {
+        //TODO: make this modular
+        
+        AAAGameManager gameManager = AAAGameManager.Instance;
+        gameManager.StopGame();
+        AnnounceLevelFinished?.Invoke();
     }
 
     IEnumerator WaitForSpawner()

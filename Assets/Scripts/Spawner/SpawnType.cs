@@ -2,5 +2,6 @@ public enum SpawnType
 {
     CardboardMannequin,
     FollowMannequin,
-    Player
+    Player,
+    RandomMannequin
 }

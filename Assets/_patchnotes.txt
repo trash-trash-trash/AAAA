@@ -127,3 +127,19 @@ TODO: swapping back to rigid body from NavMeshAgent causes slight wobble
 -- added PauseMenu with Idle, Pause, Options and Quit states. Player can now Pause the game by hitting escape.
 
 -- updated Inventory and PlayerMiddleMan to turn off player abilities while paused 
+
+2.3
+
+-- added scant MainMenu, sceneLoader, timer
+
+-- sceneloader loads between mainmenu and a test level
+
+-- GameManager now starts/stops timer on sceneload
+
+-- added EndLevel.cs
+
+-- updated LevelManager to take an end of level trigger. Entering the end of the level now shows your rank (time + deaths) and sends back to the main menu
+
+-- reverted PlayerMiddleManager from being a singleton. Spawner now informs AI of the Player's Transform manually...
+
+-- started Save/Load high scores

@@ -15,7 +15,7 @@ public class PlayerInputHandler : MonoBehaviour
     
     public event Action<Vector2> AnnounceMoveVector2;
 
-    public Action<bool> AnnounceQuit;
+    public event Action<bool> AnnounceQuit;
     
     public event Action<bool> AnnounceSprint;
     
