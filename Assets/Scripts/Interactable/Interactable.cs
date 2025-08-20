@@ -24,6 +24,21 @@ public class Interactable : MonoBehaviour, IInteractable
         return interactString;
     }
     
+    public virtual void OnTriggerEnter(Collider other)
+    {
+        if (!canInteractWith) return;
+        if (other.GetComponent<IInteract>()!=null)
+        {
+            iInteractInRangeToInteract = true;
+
+            IInteract iInteract = other.GetComponent<IInteract>();
+            if (iInteract != null)
+            {
+                OnIInteractEntered(other.transform);
+                iInteract.SetNearbyInteractable(this);
+            }
+        }
+    }
 
     //change to ontriggerstay? note this will trigger every frame while overlapped
     public virtual void OnTriggerStay(Collider other)
@@ -38,12 +53,8 @@ public class Interactable : MonoBehaviour, IInteractable
             IInteract iInteract = other.GetComponent<IInteract>();
             if (iInteract != null)
             {
-                if (!iInteract.ReturnCanInteract())
-                {
-                    interactString = "";
-                }
-                iInteract.SetNearbyInteractable(this);
                 OnIInteractEntered(other.transform);
+                iInteract.SetNearbyInteractable(this);
             }
         }
     }

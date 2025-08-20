@@ -32,42 +32,41 @@ public class Door : Interactable
     public override void Interact()
     {
     }
-
-    public override void OnTriggerStay(Collider other)
+    
+    protected override void OnIInteractEntered(Transform other)
     {
-        if (foreverLocked)
-            return;
-        
-        if(iInteractTransform!=null)
-            inventory = iInteractTransform.GetComponent<Inventory>();
-        // Always do the check dynamically
-        hasKey = false;
-        canUnlock = false;
+        base.OnIInteractEntered(other);
 
-        if (locked && inventory != null)
+        if (iInteractTransform != null && inventory == null)
         {
-            if (inventory.playerItems.Contains(key))
-            {
-                hasKey = true;
-                canUnlock = inventory.selectedItem == key;
-            }
+            inventory = iInteractTransform.GetComponent<Inventory>();
         }
-        base.OnTriggerStay(other);
     }
     
     public override string InteractString()
     {
-        if (foreverLocked)
-            return "";
+        if (foreverLocked) return "";
+
         if (locked)
         {
-            if (!hasKey) return "LOCKED. FIND THE KEY";
-            if (!canUnlock) return "KEY NOT EQUIPPED!";
+            Transform t = iInteractTransform;
+            if (t == null) return "";
+
+            Inventory inv = t.GetComponent<Inventory>();
+            if (inv == null) return "";
+
+            bool playerHasKey = inv.playerItems.Contains(key);
+            if (!playerHasKey) return "LOCKED. FIND THE KEY";
+
+            bool keyEquipped = inv.selectedItem == key;
+            if (!keyEquipped) return "KEY NOT EQUIPPED!";
+
             return "E: UNLOCK";
         }
 
         return open ? "E: CLOSE DOOR" : "E: OPEN DOOR";
     }
+
 
 
     public virtual void ResetDoor()

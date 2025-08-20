@@ -27,6 +27,6 @@ public class ItemPickup : Interactable
 
     public override string InteractString()
     {
-        return "PICK UP "+itemSO.itemName;
+        return "E: PICK UP "+itemSO.itemName;
     }
 }

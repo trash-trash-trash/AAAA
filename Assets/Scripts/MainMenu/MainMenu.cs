@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         sceneLoader = SceneLoader.Instance;
-        sceneLoader.LoadScene("LevelLoopTest");
+        sceneLoader.LoadScene("Level01");
     }
 
     public void Quit()
